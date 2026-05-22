@@ -1,8 +1,8 @@
 # Modelagem de Banco de Dados - Hardware Tracker
 
-**Status:** Em Revisão  
-**Última Atualização:** 2026-05-20  
-**Versão:** 0.2  
+**Status:** Revisado — Sessão 2026-05-22  
+**Última Atualização:** 2026-05-22  
+**Versão:** 0.3  
 **SGBD:** PostgreSQL 13+
 
 ---
@@ -333,7 +333,30 @@ CREATE INDEX idx_comments_user  ON comments(user_id);
 CREATE INDEX idx_comments_date  ON comments(created_at DESC);
 ```
 
-### 2.11 PriceAlerts (Could Have)
+### 2.11 Coupons
+
+```sql
+-- Cupons coletados via scraping, vinculados a um produto em uma loja específica.
+-- Acesso restrito a usuários logados (US-27).
+
+CREATE TABLE coupons (
+    id             BIGSERIAL PRIMARY KEY,
+    hardware_id    BIGINT NOT NULL REFERENCES hardware(id) ON DELETE CASCADE,
+    store_id       BIGINT NOT NULL REFERENCES stores(id) ON DELETE CASCADE,
+    code           VARCHAR(100) NOT NULL,
+    discount_type  VARCHAR(20) NOT NULL DEFAULT 'percentage', -- 'percentage' | 'fixed'
+    discount_value DECIMAL(10,2) NOT NULL,
+    valid_until    TIMESTAMP NULL,
+    is_active      BOOLEAN DEFAULT TRUE,
+    created_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at     TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_coupons_hardware ON coupons(hardware_id) WHERE is_active = TRUE;
+CREATE INDEX idx_coupons_store    ON coupons(store_id) WHERE is_active = TRUE;
+```
+
+### 2.12 PriceAlerts (Could Have)
 
 ```sql
 -- US-26: usuário define preço-alvo; bot Telegram notifica quando atingido.
@@ -547,13 +570,15 @@ Apps Django planejados e suas tabelas principais:
 | `users` (auth customizado) | users |
 | `scraping` | (sem models próprios — lê/escreve em hardware e prices) |
 | `alerts` | price_alerts |
+| `scraping` | coupons (coleta junto com preços) |
 
 ---
 
 ## 9. Próximos Passos
 
 1. [x] Revisar e alinhar esquema com User Stories e decisões de sessão
-2. [ ] Implementar models.py Django por app
+2. [x] Modelagem discutida e validada com Guilherme — sessão 2026-05-22
+3. [ ] Implementar models.py Django por app
 3. [ ] Criar migrations e rodar em ambiente local (Docker)
 4. [ ] Criar fixtures de seed (categorias, lojas, hardware populares)
 5. [ ] Testar queries de performance com EXPLAIN ANALYZE
