@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-backend:
+    name: Lint (Python)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install flake8
+        run: pip install flake8
+
+      - name: Run flake8
+        run: |
+          # Ignora arquivos de migrations gerados automaticamente
+          flake8 backend/ --exclude=backend/**/migrations/ --max-line-length=120
+        continue-on-error: true   # remover quando o backend estiver scaffoldado
+
+  test-backend:
+    name: Tests (Python)
+    runs-on: ubuntu-latest
+    needs: lint-backend
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: hardware
+          POSTGRES_PASSWORD: hardware123
+          POSTGRES_DB: hardware_tracker_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          if [ -f backend/requirements.txt ]; then
+            pip install -r backend/requirements.txt
+          else
+            echo "requirements.txt ainda não existe — pulando instalação"
+          fi
+
+      - name: Run tests
+        env:
+          DATABASE_URL: postgresql://hardware:hardware123@localhost:5432/hardware_tracker_test
+          DJANGO_SETTINGS_MODULE: core.settings
+        run: |
+          if [ -f backend/manage.py ]; then
+            cd backend && python manage.py test
+          else
+            echo "Backend ainda não scaffoldado — placeholder de teste passou"
+          fi

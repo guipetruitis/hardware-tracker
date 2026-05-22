@@ -193,19 +193,18 @@ Hardware Tracker é uma plataforma brasileira de comparação de preços e monta
 ### MVP (Minimum Viable Product)
 
 - [ ] Comparador de preços funcional (2+ lojas)
+- [ ] Histórico de preços com gráficos
 - [ ] Verificador de compatibilidade básico
 - [ ] Home page com design responsivo
 - [ ] Login de usuário (email/senha)
 - [ ] Criação de builds simples
 - [ ] Exibição de builds da comunidade
-- [ ] Newsletter funcional
 
 ### Post-MVP
 
 - [ ] IA integrada com sugestões
-- [ ] Histórico de preços com gráficos
 - [ ] Extensão de navegador
-- [ ] Bot Telegram
+- [ ] Bot Telegram (alertas de preço individuais e canal de ofertas gerais)
 - [ ] Sistema de comentários robusto
 
 ---

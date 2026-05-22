@@ -1,3 +1,55 @@
+# --- Claude / MCP ---
 .claude/
+.mcp.json
+
+# --- Documentos internos ---
 Requisitos-Projeto/
 TRABALHAR_AQUI.md
+
+# --- Python / Django ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+venv/
+.venv/
+env/
+.env
+.env.*
+!.env.example
+*.sqlite3
+*.db
+media/
+staticfiles/
+*.log
+celerybeat-schedule
+celerybeat.pid
+
+# --- Node / React ---
+node_modules/
+.next/
+dist/
+build/
+.cache/
+*.tsbuildinfo
+.eslintcache
+
+# --- Docker ---
+.docker/
+
+# --- IDEs ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Secrets / Keys ---
+*.pem
+*.key
+secrets/

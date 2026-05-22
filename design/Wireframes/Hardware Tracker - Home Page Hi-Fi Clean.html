@@ -1,0 +1,478 @@
+<!DOCTYPE html><html lang="pt-br"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Hardware Tracker - Monte seu PC Gamer</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#fff1eb",
+                        "surface-tint": "#a04100",
+                        "primary": "#a04100",
+                        "on-primary-fixed": "#351000",
+                        "inverse-surface": "#3d2d26",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#ffede6",
+                        "surface-container-high": "#fee3d8",
+                        "danger": "#E63946",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#261812",
+                        "on-surface-variant": "#5a4136",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "inverse-primary": "#ffb693",
+                        "border": "#E5E7EB",
+                        "outline-variant": "#e2bfb0",
+                        "on-surface": "#261812",
+                        "secondary": "#5f5e5e",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#f8ddd2",
+                        "tertiary-fixed": "#e2e2e4",
+                        "on-secondary-fixed-variant": "#474746",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#1a1c1d",
+                        "surface": "#fff8f6",
+                        "on-tertiary-fixed-variant": "#454749",
+                        "surface-container": "#ffeae1",
+                        "outline": "#8e7164",
+                        "surface-container-highest": "#f8ddd2",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed": "#e5e2e1",
+                        "on-secondary-container": "#636262",
+                        "on-primary-container": "#572000",
+                        "background": "#fff8f6",
+                        "on-tertiary-container": "#2f3133",
+                        "secondary-container": "#e2dfde",
+                        "primary-fixed-dim": "#ffb693",
+                        "tertiary-container": "#98999b",
+                        "primary-container": "#ff6b00",
+                        "success": "#22C55E",
+                        "tertiary": "#5d5e60",
+                        "surface-dim": "#efd5ca",
+                        "primary-fixed": "#ffdbcc",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "hero-gradient-end": "#FFF4EC",
+                        "surface-bright": "#fff8f6",
+                        "tertiary-fixed-dim": "#c6c6c8",
+                        "text-muted": "#6B7280",
+                        "hero-gradient-start": "#FFFFFF"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "card-padding": "20px",
+                        "gutter": "24px",
+                        "margin-desktop": "80px",
+                        "section-padding": "80px"
+                    },
+                    "fontFamily": {
+                        "label-nav": ["Inter"],
+                        "badge": ["Inter"],
+                        "headline-hero-mobile": ["Inter"],
+                        "body-main": ["Inter"],
+                        "label-small": ["Inter"],
+                        "headline-section": ["Inter"],
+                        "headline-hero": ["Inter"],
+                        "headline-card": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-nav": ["14px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "badge": ["12px", { "lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "headline-hero-mobile": ["40px", { "lineHeight": "1.1", "fontWeight": "700" }],
+                        "body-main": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-small": ["13px", { "lineHeight": "1.2", "fontWeight": "400" }],
+                        "headline-section": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-hero": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-card": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .hover-glow:hover {
+            box-shadow: 0 8px 24px rgba(255, 107, 0, 0.12);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-main antialiased selection:bg-primary-container selection:text-white">
+<!-- Shared TopNavBar (Included as it's a destination screen) -->
+<div class="relative flex h-auto w-full flex-col bg-surface group/design-root overflow-x-hidden font-body-main">
+<div class="mx-auto max-w-container-max w-full flex h-full grow flex-col">
+<div class="px-4 md:px-margin-desktop flex flex-1 justify-center py-5">
+<div class="flex flex-col w-full flex-1">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-border px-4 py-3 bg-surface-container-lowest shadow-sm rounded-lg">
+<a href="/" class="flex items-center"><img src="https://lh3.googleusercontent.com/aida/ADBb0uhATiLmGO8n2q4_w7aogYW2zpof799E_MuBSx8Zcaqqnlyio8TfKBODf-uxYO9VtRJrxNLQeI6NWZxo1Klxe2BJDJ3UAB6xv1JtpwyuqGIivjA2VFicyodjfaIwGkP_fYdGWnmCsIU6JDi-RbAeWYZ6ERcFXH-Gg1wEfduEF11AX_GuJhFKkNQtKIheVQ54W0X-s_hGUkKag76Gx2JXSrWf3AkrObNQYGHA8nHhwOIqbtuUnr0rKXhIoA" alt="Hardware Tracker" class="w-auto object-contain h-12"></a>
+<div class="hidden md:flex flex-1 justify-end gap-8">
+<nav class="flex items-center gap-9">
+<a class="text-on-surface font-label-nav text-label-nav hover:text-primary-container transition-colors" href="#">Peças</a>
+<a class="text-on-surface font-label-nav text-label-nav hover:text-primary-container transition-colors" href="#">PC Builder</a>
+<a class="text-on-surface font-label-nav text-label-nav hover:text-primary-container transition-colors" href="#">Comunidade</a>
+<a class="text-on-surface font-label-nav text-label-nav hover:text-primary-container transition-colors" href="#">Ofertas</a>
+</nav>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-DEFAULT h-10 px-4 bg-primary-container text-white text-sm font-bold leading-normal hover:bg-primary transition-colors hover-glow">
+<span class="truncate">Entrar</span>
+</button>
+</div>
+<div class="md:hidden flex items-center">
+<button class="text-on-surface p-2"><span class="material-symbols-outlined">menu</span></button>
+</div>
+</header>
+</div>
+</div>
+</div>
+</div>
+<main class="w-full max-w-container-max mx-auto">
+<!-- HERO -->
+<section class="bg-gradient-to-b from-hero-gradient-start to-hero-gradient-end px-4 md:px-margin-desktop py-section-padding text-center">
+<div class="max-w-4xl mx-auto flex flex-col items-center gap-8">
+<h1 class="font-headline-hero-mobile md:font-headline-hero text-headline-hero-mobile md:text-headline-hero text-on-surface">
+                    Monte seu PC Gamer do jeito certo.
+                </h1>
+<p class="text-text-muted text-lg md:text-xl max-w-2xl">
+                    Compare preços, verifique compatibilidade e encontre as melhores ofertas nas principais lojas de hardware do Brasil.
+                </p>
+<div class="flex flex-wrap gap-4 justify-center mt-4">
+<button class="flex items-center justify-center rounded-DEFAULT h-12 px-8 bg-primary-container text-white font-bold text-base hover:bg-primary transition-colors hover-glow shadow-md">
+                        Montar PC Agora
+                    </button>
+<button class="flex items-center justify-center rounded-DEFAULT h-12 px-8 bg-transparent border-2 border-primary-container text-primary-container font-bold text-base hover:bg-surface-container transition-colors">
+                        Ver Comparador
+                    </button>
+</div>
+<div class="flex flex-wrap justify-center gap-x-8 gap-y-4 mt-8 pt-8 border-t border-border w-full text-sm font-medium text-text-muted">
+<div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary-container text-xl" data-icon="memory">memory</span> 24.3k Peças</div>
+<div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary-container text-xl" data-icon="build">build</span> 180k+ Builds</div>
+<div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary-container text-xl" data-icon="storefront">storefront</span> 4 Lojas Principais</div>
+<div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary-container text-xl" data-icon="check_circle">check_circle</span> 99.9% Uptime</div>
+</div>
+</div>
+</section>
+<!-- COMO AJUDAMOS -->
+<section class="bg-secondary-fixed px-4 md:px-margin-desktop py-section-padding">
+<div class="max-w-7xl mx-auto">
+<h2 class="font-headline-section text-headline-section text-on-surface mb-12 text-center">Como Ajudamos</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-border shadow-sm hover:shadow-md transition-shadow hover-glow flex flex-col items-start gap-4">
+<div class="bg-surface-container p-3 rounded-lg text-primary-container">
+<span class="material-symbols-outlined text-3xl" data-icon="payments">payments</span>
+</div>
+<h3 class="font-headline-card text-headline-card text-on-surface">Comparador de Preços</h3>
+<p class="text-text-muted text-sm">Acompanhe o histórico de preços e compre no momento certo.</p>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-border shadow-sm hover:shadow-md transition-shadow hover-glow flex flex-col items-start gap-4">
+<div class="bg-surface-container p-3 rounded-lg text-primary-container">
+<span class="material-symbols-outlined text-3xl" data-icon="verified">verified</span>
+</div>
+<h3 class="font-headline-card text-headline-card text-on-surface">Compatibilidade</h3>
+<p class="text-text-muted text-sm">Nosso sistema avisa se as peças escolhidas funcionam juntas perfeitamente.</p>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-border shadow-sm hover:shadow-md transition-shadow hover-glow flex flex-col items-start gap-4">
+<div class="bg-surface-container p-3 rounded-lg text-primary-container">
+<span class="material-symbols-outlined text-3xl" data-icon="smart_toy">smart_toy</span>
+</div>
+<h3 class="font-headline-card text-headline-card text-on-surface">Sugestões com IA</h3>
+<p class="text-text-muted text-sm">Informe seu orçamento e receba a melhor build gerada por Inteligência Artificial.</p>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-border shadow-sm hover:shadow-md transition-shadow hover-glow flex flex-col items-start gap-4">
+<div class="bg-surface-container p-3 rounded-lg text-primary-container">
+<span class="material-symbols-outlined text-3xl" data-icon="groups">groups</span>
+</div>
+<h3 class="font-headline-card text-headline-card text-on-surface">Comunidade</h3>
+<p class="text-text-muted text-sm">Compartilhe sua máquina, tire dúvidas e avalie as builds de outros usuários.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- OFERTAS EM DESTAQUE -->
+<section class="bg-background px-4 md:px-margin-desktop py-section-padding">
+<div class="max-w-7xl mx-auto">
+<div class="flex justify-between items-end mb-8">
+<h2 class="font-headline-section text-headline-section text-on-surface">Ofertas em Destaque</h2>
+<a class="text-primary-container font-medium hover:underline text-sm flex items-center gap-1" href="#">
+                        Ver todas <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Oferta 1 -->
+<div class="bg-surface-container-lowest rounded-xl border border-border shadow-sm overflow-hidden flex flex-col hover-glow transition-all">
+<div class="relative aspect-square p-4 bg-white flex items-center justify-center">
+<img class="object-contain w-full h-full" data-alt="A sleek, modern high-end graphics card floating in a bright, white studio setup. The lighting is high-key and crisp, highlighting the metallic heatsinks and subtle orange accents on the GPU shroud. The mood is premium and technical, perfectly fitting a high-tech corporate modern aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVSgTaAOrGeV4DmnQesSjDK1aASC2RtLpzcEOBhKVcAeACAgHnbFv7b4DKlLtGSntIrbYT36JBd1iH-FS-2tKan52B1-5uO9sB-FAdmGHqRcIHfvij--C1R9EIhAfVcTIGXrbWyc4PwP8oiNdaHTKblpOuiuH6S_5yVqDv0YDJOlnEKxvRalVY6B64FT2QcLILMU-pehfRJVa0xL19PfwtyyEBP2t50MQTHwmbj0FRVYdl4t_8eRT1aCBa1HDXxYnRac20roGjFg">
+<div class="absolute top-2 right-2 bg-success/10 border border-success/40 text-success font-badge text-badge px-2 py-1 rounded-full">
+                                -18%
+                            </div>
+</div>
+<div class="p-card-padding flex flex-col gap-2 border-t border-border flex-grow bg-surface-container-lowest">
+<p class="text-xs text-text-muted font-medium uppercase tracking-wider">Placa de Vídeo</p>
+<h3 class="font-semibold text-on-surface line-clamp-2 text-sm">GeForce RTX 4060 Ti 8GB GDDR6</h3>
+<div class="mt-auto pt-3 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-xs text-text-muted line-through">R$ 2.899,00</span>
+<span class="text-primary-container font-bold text-lg">R$ 2.379,90</span>
+</div>
+<span class="text-xs font-bold text-secondary bg-secondary-container px-2 py-1 rounded">KaBuM!</span>
+</div>
+<button class="w-full mt-3 bg-primary-container/10 text-primary-container font-medium py-2 rounded-DEFAULT hover:bg-primary-container hover:text-white transition-colors text-sm">
+                                Ver Oferta
+                            </button>
+</div>
+</div>
+<!-- Oferta 2 -->
+<div class="bg-surface-container-lowest rounded-xl border border-border shadow-sm overflow-hidden flex flex-col hover-glow transition-all">
+<div class="relative aspect-square p-4 bg-white flex items-center justify-center">
+<img class="object-contain w-full h-full" data-alt="A high-performance desktop processor resting on a clean white surface. Soft studio lighting catches the reflective metallic heat spreader, emphasizing its precision engineering. The surrounding environment is minimal and bright, adhering to a high-tech corporate modern style with a subtle hint of warm orange ambient light in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADx545kHyc9DfAIgH_lV2fbi28tT26mTcJTCRZnvPCDHZIVO6ci55FJZ_R07WRvnywqxu9UA_bHF_89rUDR35UDlFfFnAVM-WEhcuj4NnK-_j3g6T_wQ27E1CMde0BSRIp8m1ghpb1janN2_QrCkrDI4mFQ5Mo_sa_vE1wu8BumkuVWSNwKVqIndjjL_psdDEaLQj8wFEmo2bdYYI4_Z8j1XVJA3Jp_vOUBJ8TClO5FOg6rgpO-kgW_4kRrcmXCHZ8DdtJfCcqNg">
+<div class="absolute top-2 right-2 bg-success/10 border border-success/40 text-success font-badge text-badge px-2 py-1 rounded-full">
+                                -12%
+                            </div>
+</div>
+<div class="p-card-padding flex flex-col gap-2 border-t border-border flex-grow bg-surface-container-lowest">
+<p class="text-xs text-text-muted font-medium uppercase tracking-wider">Processador</p>
+<h3 class="font-semibold text-on-surface line-clamp-2 text-sm">AMD Ryzen 5 7600X 4.7GHz</h3>
+<div class="mt-auto pt-3 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-xs text-text-muted line-through">R$ 1.699,00</span>
+<span class="text-primary-container font-bold text-lg">R$ 1.495,00</span>
+</div>
+<span class="text-xs font-bold text-secondary bg-secondary-container px-2 py-1 rounded">Terabyte</span>
+</div>
+<button class="w-full mt-3 bg-primary-container/10 text-primary-container font-medium py-2 rounded-DEFAULT hover:bg-primary-container hover:text-white transition-colors text-sm">
+                                Ver Oferta
+                            </button>
+</div>
+</div>
+<!-- Oferta 3 -->
+<div class="bg-surface-container-lowest rounded-xl border border-border shadow-sm overflow-hidden flex flex-col hover-glow transition-all">
+<div class="relative aspect-square p-4 bg-white flex items-center justify-center">
+<img class="object-contain w-full h-full" data-alt="A fast NVMe M.2 SSD drive positioned diagonally on a pristine white backdrop. Crisp, diffused lighting highlights the intricate circuitry and the brand label on the memory stick. The aesthetic is clean, modern, and technical, perfectly suited for a premium hardware marketplace interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBREogBIZnlbvaG2nQ09YTHjAfYZNrvS6DY77uyy-qPb8saSvbCZ__tg1LxQXbye5fha3hITbGa03QHGodjdgPLSzPLJzy8h25shxiemEgDJSjsQZ5kr4a9U5HUyKt4kKmOjAmIqnJ4QZDE7lMLIDNuKnmXHl0bMOzqi-QR9eCUMjkm_q40tkFJMYOVQ876yunRYu7fxkcP0gctnp__oEu9AQxoICS5Nt5xjD4U8gbxJQd50enoiLCo-cnr_Y1A2CBn-hmL9pDvmw">
+<div class="absolute top-2 right-2 bg-success/10 border border-success/40 text-success font-badge text-badge px-2 py-1 rounded-full">
+                                -25%
+                            </div>
+</div>
+<div class="p-card-padding flex flex-col gap-2 border-t border-border flex-grow bg-surface-container-lowest">
+<p class="text-xs text-text-muted font-medium uppercase tracking-wider">Armazenamento</p>
+<h3 class="font-semibold text-on-surface line-clamp-2 text-sm">SSD 1TB Kingston NV2, M.2 NVMe</h3>
+<div class="mt-auto pt-3 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-xs text-text-muted line-through">R$ 499,00</span>
+<span class="text-primary-container font-bold text-lg">R$ 374,90</span>
+</div>
+<span class="text-xs font-bold text-secondary bg-secondary-container px-2 py-1 rounded">Pichau</span>
+</div>
+<button class="w-full mt-3 bg-primary-container/10 text-primary-container font-medium py-2 rounded-DEFAULT hover:bg-primary-container hover:text-white transition-colors text-sm">
+                                Ver Oferta
+                            </button>
+</div>
+</div>
+<!-- Oferta 4 -->
+<div class="bg-surface-container-lowest rounded-xl border border-border shadow-sm overflow-hidden flex flex-col hover-glow transition-all">
+<div class="relative aspect-square p-4 bg-white flex items-center justify-center">
+<img class="object-contain w-full h-full" data-alt="A stick of high-speed DDR5 RGB RAM standing upright against a bright, minimalist background. The soft white lighting subtly illuminates the frosted RGB lightbar on top, while keeping the focus on the sleek metal heatsink. The image exudes a high-tech, modern vibe with strong contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDi5t3XHVXQuFc5TPRq7nid4FT_jyTU1krKhQLPQnyFQnZxInM48hCXtb5n9y7L7-qwTkwwmW94sLy9Qr_QXAeUHID1OT8cjBCFpamP223YI22VdDrtSC_na3zq2pTkD8kCeWFJJhUqfA-Eqk9Jr_xDNQP0x78-qAwBglOcOIcTqTDxKpHcsDPHDWRN6jij323OFQFgD9V1y0ATchB-AHXRFxaEX5TDkJbAsBrW_BQrD1BFFlCsA3cnmmidUUmkAUrVrQjAR9Hy6Q">
+</div>
+<div class="p-card-padding flex flex-col gap-2 border-t border-border flex-grow bg-surface-container-lowest">
+<p class="text-xs text-text-muted font-medium uppercase tracking-wider">Memória RAM</p>
+<h3 class="font-semibold text-on-surface line-clamp-2 text-sm">Memória Corsair Vengeance 32GB (2x16GB) DDR5</h3>
+<div class="mt-auto pt-3 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-xs text-text-muted hidden"></span>
+<span class="text-primary-container font-bold text-lg">R$ 899,00</span>
+</div>
+<span class="text-xs font-bold text-secondary bg-secondary-container px-2 py-1 rounded">Amazon</span>
+</div>
+<button class="w-full mt-3 bg-primary-container/10 text-primary-container font-medium py-2 rounded-DEFAULT hover:bg-primary-container hover:text-white transition-colors text-sm">
+                                Ver Oferta
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ESTATÍSTICAS (Stats Strip) -->
+<section class="bg-primary-container py-12">
+<div class="max-w-7xl mx-auto px-4 md:px-margin-desktop">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center text-white">
+<div class="flex flex-col gap-2">
+<span class="text-4xl md:text-5xl font-black tracking-tighter">180.492</span>
+<span class="text-sm font-medium uppercase tracking-widest opacity-80">Builds Salvas</span>
+</div>
+<div class="flex flex-col gap-2 border-y md:border-y-0 md:border-x border-white/20 py-4 md:py-0">
+<span class="text-4xl md:text-5xl font-black tracking-tighter">3.2M+</span>
+<span class="text-sm font-medium uppercase tracking-widest opacity-80">Comparações Feitas</span>
+</div>
+<div class="flex flex-col gap-2">
+<span class="text-4xl md:text-5xl font-black tracking-tighter">24.341</span>
+<span class="text-sm font-medium uppercase tracking-widest opacity-80">Peças Cadastradas</span>
+</div>
+</div>
+</div>
+</section>
+<!-- BUILDS DA COMUNIDADE -->
+<section class="bg-secondary-fixed px-4 md:px-margin-desktop py-section-padding">
+<div class="max-w-7xl mx-auto">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h2 class="font-headline-section text-headline-section text-on-surface">Builds da Comunidade</h2>
+<p class="text-text-muted mt-2">Inspire-se nas configurações criadas por outros usuários.</p>
+</div>
+<a class="text-primary-container font-medium hover:underline text-sm hidden md:flex items-center gap-1" href="#">
+                        Ver todas <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Build 1 -->
+<div class="bg-surface-container-lowest rounded-xl border border-border shadow-sm overflow-hidden flex flex-col hover-glow transition-all p-card-padding gap-4">
+<div class="aspect-video bg-surface-container rounded-lg relative overflow-hidden bg-cover bg-center" data-alt="Inside a brightly lit PC case showcasing a clean hardware build. Soft white ambient lighting illuminates neatly managed cables, a glowing CPU cooler, and a massive modern graphics card. The overall look is premium, technical, and adheres to a crisp light-mode corporate modern aesthetic." style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuAWqMmOpfWEmClXyIsT6_KlVgsCKntEYljz8fh3tCG97u9tjzYMulF3XC5zIxU3w2XwsV31lfX2e2bAL4dOToFr-SViEl5XtYnCMDTk_70lJC0xpOmKGUOzwgQlk-bEOGYHaqcBFGGlxR_NhMDartpsBVMTKm6LKZQOMgooIkE56wkMwGKR05lkiXaQpREeZr_oQzX0_3aycwm9-ab9NNnwNbPtdppSZaISD1qzygfbKCoZKxxvcXg9h1K0BXO3dyBI0e12ji_B-g&quot;);">
+</div>
+<div>
+<h3 class="font-headline-card text-lg text-on-surface line-clamp-1">Monstro 4K Ultra</h3>
+<p class="text-sm text-text-muted">por <span class="text-primary-container">@alexcoder</span></p>
+</div>
+<div class="flex gap-2 flex-wrap">
+<span class="bg-primary/10 border border-primary/40 text-primary font-badge text-badge px-2 py-1 rounded-full">Gamer</span>
+<span class="bg-secondary-fixed border border-border text-secondary font-badge text-badge px-2 py-1 rounded-full">4K</span>
+<span class="bg-secondary-fixed border border-border text-secondary font-badge text-badge px-2 py-1 rounded-full">High-End</span>
+</div>
+<div class="mt-auto pt-4 border-t border-border flex justify-between items-center">
+<span class="text-primary-container font-bold">R$ 12.450</span>
+<div class="flex items-center gap-1 text-text-muted text-sm">
+<span class="material-symbols-outlined text-base" data-icon="favorite">favorite</span> 142
+                            </div>
+</div>
+</div>
+<!-- Build 2 -->
+<div class="bg-surface-container-lowest rounded-xl border border-border shadow-sm overflow-hidden flex flex-col hover-glow transition-all p-card-padding gap-4">
+<div class="aspect-video bg-surface-container rounded-lg relative overflow-hidden bg-cover bg-center" data-alt="A minimalist and compact mini-ITX PC build sitting on a clean wooden desk in a bright room. The case is sleek silver aluminum. Soft daylight creates a warm, inviting yet highly technical atmosphere, fitting the high-tech modern aesthetic of a premium hardware tracking application." style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuC7o9A4CTOFEIuxquHWXpndhuDGoTDFMcNzR_vxR5EQHgNu2urw2oaJRouIpCXEBPMTz-XAYliVjZX7_LAPaHlIdv-UCYuOrygaahes8kIztJPRZflscTQWg4VPOyNbs-dzje7pTArJriy-KbTq4gcy2o2z3ZLgYLvJhsY6SZ54rjikbJyk6kApiDW0nAmeQsEBX-J-bmiKDXaP4oixjoF8fVNq_jKGOLH6zHACbiAd6tE6AxDGK74q_cQ4hqd95nOYRpUHkXs4Hg&quot;);">
+</div>
+<div>
+<h3 class="font-headline-card text-lg text-on-surface line-clamp-1">Budget 1080p 60fps</h3>
+<p class="text-sm text-text-muted">por <span class="text-primary-container">@maria_dev</span></p>
+</div>
+<div class="flex gap-2 flex-wrap">
+<span class="bg-primary/10 border border-primary/40 text-primary font-badge text-badge px-2 py-1 rounded-full">Custo-Benefício</span>
+<span class="bg-secondary-fixed border border-border text-secondary font-badge text-badge px-2 py-1 rounded-full">1080p</span>
+</div>
+<div class="mt-auto pt-4 border-t border-border flex justify-between items-center">
+<span class="text-primary-container font-bold">R$ 3.200</span>
+<div class="flex items-center gap-1 text-text-muted text-sm">
+<span class="material-symbols-outlined text-base" data-icon="favorite">favorite</span> 89
+                            </div>
+</div>
+</div>
+<!-- Build 3 -->
+<div class="bg-surface-container-lowest rounded-xl border border-border shadow-sm overflow-hidden flex flex-col hover-glow transition-all p-card-padding gap-4">
+<div class="aspect-video bg-surface-container rounded-lg relative overflow-hidden bg-cover bg-center" data-alt="A professional workstation setup featuring multiple monitors and a sleek black PC tower. The room is flooded with natural white light, emphasizing a productive, clean, and modern corporate environment. The subtle orange accents in the UI elements perfectly match the brand identity." style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuA7_Pt65f83M--BgO5ZZNJzYKe8NwEBJXMfmOS2iSYEuBRq1cvdTxcSO2P02ngFJo5c7GtRHfW2SR3JGDSwOuzfs--ZHs5AIcq6xzrFZUA13jNYXDCaN-DCI_k_LBMl0aX6CbOO6RE-TkxK87cXxk81wGwfFF_GWb-TieSMFWbe7kmNWeCSoFpKY9QMCXo972bah-senLVGYtTcaauHe1hjHZrEuWS4d6Wq-sGxZket_nYcXhKupB3e6xMIIvKWN0pe-EqcK38gCw&quot;);">
+</div>
+<div>
+<h3 class="font-headline-card text-lg text-on-surface line-clamp-1">Workstation Edição de Vídeo</h3>
+<p class="text-sm text-text-muted">por <span class="text-primary-container">@joao_edit</span></p>
+</div>
+<div class="flex gap-2 flex-wrap">
+<span class="bg-primary/10 border border-primary/40 text-primary font-badge text-badge px-2 py-1 rounded-full">Trabalho</span>
+<span class="bg-secondary-fixed border border-border text-secondary font-badge text-badge px-2 py-1 rounded-full">Produtividade</span>
+</div>
+<div class="mt-auto pt-4 border-t border-border flex justify-between items-center">
+<span class="text-primary-container font-bold">R$ 8.900</span>
+<div class="flex items-center gap-1 text-text-muted text-sm">
+<span class="material-symbols-outlined text-base" data-icon="favorite">favorite</span> 56
+                            </div>
+</div>
+</div>
+<!-- Build 4 -->
+<div class="bg-surface-container-lowest rounded-xl border border-border shadow-sm overflow-hidden flex flex-col hover-glow transition-all p-card-padding gap-4">
+<div class="aspect-video bg-surface-container rounded-lg relative overflow-hidden bg-cover bg-center" data-alt="A heavily modified, liquid-cooled PC build glowing with subtle, clean white LEDs inside a glass case. The setup sits on a bright, minimalist desk. The mood is highly technical and enthusiast-focused, aligning with a premium hardware tracking brand aesthetic that values precision and clarity." style="background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuATTcqBxDlvbpR6TmPbwNpA3cR-uWU1BXCO5-hm09JtpU2BtheF_0CvhNWDqtIEgmKXfDrIxReJnf75pTVser2VGYonm9tkYh2NTQtEfILs7QKmwrENSKl-OlwDOEyoKNO6vqZ-6ULed8pZTcEBLX3-QeXK9bA7yqTOH7-wMoOIe1xlFPYAHR1WvjMK5IHjZrq6GqSp6L39nkrqin6XLrURAf3k5PDWZ5BGuJm6bfojKhgfgmXLj5kV8UasilHxW-a9eiq720-rvg&quot;);">
+</div>
+<div>
+<h3 class="font-headline-card text-lg text-on-surface line-clamp-1">Watercooled RGB Minimal</h3>
+<p class="text-sm text-text-muted">por <span class="text-primary-container">@tech_enthusiast</span></p>
+</div>
+<div class="flex gap-2 flex-wrap">
+<span class="bg-primary/10 border border-primary/40 text-primary font-badge text-badge px-2 py-1 rounded-full">Entusiasta</span>
+<span class="bg-secondary-fixed border border-border text-secondary font-badge text-badge px-2 py-1 rounded-full">Custom Loop</span>
+</div>
+<div class="mt-auto pt-4 border-t border-border flex justify-between items-center">
+<span class="text-primary-container font-bold">R$ 15.600</span>
+<div class="flex items-center gap-1 text-text-muted text-sm">
+<span class="material-symbols-outlined text-base" data-icon="favorite">favorite</span> 215
+                            </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- FOOTER -->
+<footer class="bg-[#1A1A1A] text-white py-16 px-4 md:px-margin-desktop font-body-main">
+<div class="max-w-container-max mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+<div class="col-span-1 md:col-span-1 flex flex-col gap-4">
+<div class="flex items-center mb-2"><img src="https://lh3.googleusercontent.com/aida/ADBb0uhATiLmGO8n2q4_w7aogYW2zpof799E_MuBSx8Zcaqqnlyio8TfKBODf-uxYO9VtRJrxNLQeI6NWZxo1Klxe2BJDJ3UAB6xv1JtpwyuqGIivjA2VFicyodjfaIwGkP_fYdGWnmCsIU6JDi-RbAeWYZ6ERcFXH-Gg1wEfduEF11AX_GuJhFKkNQtKIheVQ54W0X-s_hGUkKag76Gx2JXSrWf3AkrObNQYGHA8nHhwOIqbtuUnr0rKXhIoA" alt="Hardware Tracker" class="w-auto object-contain h-12"></div>
+<p class="text-gray-400 text-sm mt-2">
+                        A plataforma definitiva para montar, comparar e otimizar o seu PC Gamer.
+                    </p>
+</div>
+<div>
+<h4 class="font-bold mb-4 text-white">Plataforma</h4>
+<ul class="flex flex-col gap-3 text-sm text-gray-400">
+<li class=""><a class="hover:text-primary-container transition-colors" href="#">PC Builder</a></li>
+<li class=""><a class="hover:text-primary-container transition-colors" href="#">Peças</a></li>
+<li class=""><a class="hover:text-primary-container transition-colors" href="#">Comunidade</a></li>
+<li class=""><a class="hover:text-primary-container transition-colors" href="#">Ofertas</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-4 text-white">Suporte</h4>
+<ul class="flex flex-col gap-3 text-sm text-gray-400">
+<li class=""><a class="hover:text-primary-container transition-colors" href="#">FAQ</a></li>
+<li class=""><a class="hover:text-primary-container transition-colors" href="#">Contato</a></li>
+<li class=""><a class="hover:text-primary-container transition-colors" href="#">Termos de Uso</a></li>
+<li class=""><a class="hover:text-primary-container transition-colors" href="#">Privacidade</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-4 text-white">Newsletter</h4>
+<p class="text-sm text-gray-400 mb-4">Receba as melhores ofertas e guias de hardware semanalmente.</p>
+<form class="flex gap-2">
+<input class="bg-[#2A2A2A] border-none text-white rounded-DEFAULT px-3 py-2 text-sm w-full focus:ring-1 focus:ring-primary-container focus:outline-none" placeholder="Seu e-mail" type="email">
+<button class="bg-primary-container text-white px-4 py-2 rounded-DEFAULT text-sm font-bold hover:bg-primary transition-colors flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-sm" data-icon="send">send</span>
+</button>
+</form>
+</div>
+</div>
+<div class="border-t border-[#333] pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+<p class="">© 2024 Hardware Tracker. Todos os direitos reservados.</p>
+<div class="flex gap-4">
+<a class="hover:text-white transition-colors" href="#">Twitter</a>
+<a class="hover:text-white transition-colors" href="#">Discord</a>
+<a class="hover:text-white transition-colors" href="#">Instagram</a>
+</div>
+</div>
+</div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+</body></html>

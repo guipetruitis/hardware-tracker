@@ -1,0 +1,414 @@
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Hardware Tracker - PC Builder</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#ffb693",
+                        "hero-gradient-end": "#FFF4EC",
+                        "outline": "#8e7164",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#e2bfb0",
+                        "text-muted": "#6B7280",
+                        "surface-container-low": "#fff1eb",
+                        "secondary": "#5f5e5e",
+                        "inverse-surface": "#3d2d26",
+                        "on-surface-variant": "#5a4136",
+                        "on-primary-fixed": "#351000",
+                        "hero-gradient-start": "#FFFFFF",
+                        "on-secondary-fixed-variant": "#474746",
+                        "on-tertiary": "#ffffff",
+                        "on-surface": "#261812",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#ffede6",
+                        "on-secondary-container": "#636262",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "surface-dim": "#efd5ca",
+                        "surface-container": "#ffeae1",
+                        "success": "#22C55E",
+                        "on-tertiary-container": "#2f3133",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#fee3d8",
+                        "background": "#fff8f6",
+                        "primary-fixed": "#ffdbcc",
+                        "surface-variant": "#f8ddd2",
+                        "tertiary-fixed": "#e2e2e4",
+                        "surface-tint": "#a04100",
+                        "tertiary-container": "#98999b",
+                        "danger": "#E63946",
+                        "tertiary-fixed-dim": "#c6c6c8",
+                        "primary-container": "#ff6b00",
+                        "on-primary-container": "#572000",
+                        "surface": "#fff8f6",
+                        "primary-fixed-dim": "#ffb693",
+                        "on-tertiary-fixed": "#1a1c1d",
+                        "on-tertiary-fixed-variant": "#454749",
+                        "surface-bright": "#fff8f6",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "secondary-container": "#e2dfde",
+                        "surface-container-highest": "#f8ddd2",
+                        "secondary-fixed": "#e5e2e1",
+                        "primary": "#a04100",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "error": "#ba1a1a",
+                        "tertiary": "#5d5e60",
+                        "border": "#E5E7EB",
+                        "on-background": "#261812"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-padding": "80px",
+                        "card-padding": "20px",
+                        "container-max": "1440px",
+                        "gutter": "24px",
+                        "margin-desktop": "80px"
+                    },
+                    "fontFamily": {
+                        "badge": ["Inter"],
+                        "headline-card": ["Inter"],
+                        "body-main": ["Inter"],
+                        "label-small": ["Inter"],
+                        "headline-section": ["Inter"],
+                        "headline-hero-mobile": ["Inter"],
+                        "label-nav": ["Inter"],
+                        "headline-hero": ["Inter"]
+                    },
+                    "fontSize": {
+                        "badge": ["12px", { "lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "headline-card": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "body-main": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-small": ["13px", { "lineHeight": "1.2", "fontWeight": "400" }],
+                        "headline-section": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-hero-mobile": ["40px", { "lineHeight": "1.1", "fontWeight": "700" }],
+                        "label-nav": ["14px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "headline-hero": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-[#F5F5F7] text-on-background font-body-main antialiased min-h-screen flex flex-col">
+<!-- TopNavBar (Simulated based on JSON structure) -->
+<header class="bg-surface dark:bg-on-background border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-margin-desktop max-w-container-max mx-auto h-16">
+<div class="flex items-center gap-8">
+<a class="flex items-center" href="#"><img src="https://lh3.googleusercontent.com/aida/ADBb0uhATiLmGO8n2q4_w7aogYW2zpof799E_MuBSx8Zcaqqnlyio8TfKBODf-uxYO9VtRJrxNLQeI6NWZxo1Klxe2BJDJ3UAB6xv1JtpwyuqGIivjA2VFicyodjfaIwGkP_fYdGWnmCsIU6JDi-RbAeWYZ6ERcFXH-Gg1wEfduEF11AX_GuJhFKkNQtKIheVQ54W0X-s_hGUkKag76Gx2JXSrWf3AkrObNQYGHA8nHhwOIqbtuUnr0rKXhIoA" alt="Hardware Tracker" class="w-auto h-16"></a>
+<nav class="hidden md:flex items-center gap-6">
+<a class="font-label-nav text-label-nav text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors" href="#">Builds</a>
+<a class="font-label-nav text-label-nav text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors" href="#">Parts</a>
+<a class="font-label-nav text-label-nav text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors" href="#">Guides</a>
+<a class="font-label-nav text-label-nav text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors" href="#">Community</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="font-label-nav text-label-nav text-on-surface-variant hover:text-primary transition-colors">Login</button>
+<button class="bg-primary-container text-white px-4 py-2 rounded-lg font-label-nav text-label-nav hover:bg-[#e66000] transition-colors">Sign Up</button>
+</div>
+</div>
+</header>
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-desktop py-8 md:py-12 flex flex-col gap-8">
+<!-- Breadcrumb & Page Actions -->
+<div class="flex justify-between items-end">
+<div>
+<nav class="flex items-center gap-2 text-text-muted font-label-small text-label-small mb-2">
+<a class="hover:text-primary-container flex items-center" href="#"><span class="material-symbols-outlined text-[16px] mr-1">arrow_back</span> Voltar</a>
+<span class="">/</span>
+<span class="text-on-background">PC Builder</span>
+</nav>
+<h1 class="font-headline-section text-headline-section text-on-background">Monte seu PC</h1>
+<p class="text-text-muted mt-1">Selecione os componentes para verificar compatibilidade e comparar preços.</p>
+</div>
+<div class="flex gap-4">
+<button class="px-4 py-2 rounded-lg font-label-nav text-label-nav border border-primary-container text-primary-container hover:bg-surface-container-low transition-colors bg-white">Salvar Build</button>
+<button class="px-4 py-2 rounded-lg font-label-nav text-label-nav border border-border text-on-surface-variant bg-white hover:bg-surface-container-highest transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">share</span> Compartilhar
+                </button>
+</div>
+</div>
+<!-- Main Content Area -->
+<div class="flex flex-col lg:flex-row gap-gutter relative">
+<!-- Left Column (Components) -->
+<div class="w-full lg:w-[65%] flex flex-col gap-6">
+<!-- Filter Bar -->
+<div class="bg-white p-4 rounded-xl border border-border flex flex-wrap items-center justify-between gap-4">
+<div class="flex gap-4">
+<select class="bg-[#F5F5F7] border-transparent rounded-lg font-label-nav text-label-nav text-on-background py-2 pl-3 pr-8 focus:ring-primary-container focus:border-primary-container">
+<option>Tipo de Uso: Gamer</option>
+<option>Tipo de Uso: Office</option>
+<option>Tipo de Uso: Produção</option>
+</select>
+<select class="bg-[#F5F5F7] border-transparent rounded-lg font-label-nav text-label-nav text-on-background py-2 pl-3 pr-8 focus:ring-primary-container focus:border-primary-container">
+<option>Faixa de Preço: Qualquer</option>
+<option>Até R$ 3.000</option>
+<option>R$ 3.000 - R$ 5.000</option>
+</select>
+</div>
+<button class="bg-primary-container text-white px-4 py-2 rounded-lg font-label-nav text-label-nav hover:bg-[#e66000] transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span> Sugestão de IA
+                    </button>
+</div>
+<!-- Component List -->
+<div class="flex flex-col gap-4">
+<!-- Selected: Processador -->
+<div class="bg-white p-card-padding rounded-xl border border-primary-container shadow-[0_2px_12px_rgba(255,107,0,0.08)] flex items-center justify-between gap-4 group">
+<div class="flex items-center gap-4 flex-grow">
+<div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center text-primary-container border border-surface-variant">
+<span class="material-symbols-outlined" data-icon="memory">memory</span>
+</div>
+<div class="flex-grow">
+<div class="font-label-small text-label-small text-text-muted mb-1">Processador</div>
+<div class="font-label-nav text-label-nav font-bold">AMD Ryzen 5 7600X</div>
+<div class="font-label-small text-label-small text-text-muted mt-1 flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">storefront</span> Terabyte
+                                </div>
+</div>
+<div class="text-right">
+<div class="font-headline-card text-headline-card text-primary-container">R$ 1.495,00</div>
+</div>
+</div>
+<div class="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-text-muted hover:text-primary-container hover:bg-surface-container-low rounded-lg transition-colors" title="Trocar">
+<span class="material-symbols-outlined">swap_horiz</span>
+</button>
+<button class="p-2 text-text-muted hover:text-danger hover:bg-error-container rounded-lg transition-colors" title="Remover">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+<!-- Selected: Placa-Mãe -->
+<div class="bg-white p-card-padding rounded-xl border border-primary-container shadow-[0_2px_12px_rgba(255,107,0,0.08)] flex items-center justify-between gap-4 group">
+<div class="flex items-center gap-4 flex-grow">
+<div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center text-primary-container border border-surface-variant">
+<span class="material-symbols-outlined" data-icon="developer_board">developer_board</span>
+</div>
+<div class="flex-grow">
+<div class="font-label-small text-label-small text-text-muted mb-1">Placa-Mãe</div>
+<div class="font-label-nav text-label-nav font-bold">ASUS TUF Gaming B650-Plus</div>
+<div class="font-label-small text-label-small text-text-muted mt-1 flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">storefront</span> KaBuM!
+                                </div>
+</div>
+<div class="text-right">
+<div class="font-headline-card text-headline-card text-primary-container">R$ 1.250,00</div>
+</div>
+</div>
+<div class="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-text-muted hover:text-primary-container hover:bg-surface-container-low rounded-lg transition-colors" title="Trocar">
+<span class="material-symbols-outlined">swap_horiz</span>
+</button>
+<button class="p-2 text-text-muted hover:text-danger hover:bg-error-container rounded-lg transition-colors" title="Remover">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+<!-- Empty: Cooler -->
+<div class="bg-white p-card-padding rounded-xl border border-border flex items-center justify-between gap-4 hover:border-primary-fixed-dim hover:shadow-sm transition-all">
+<div class="flex items-center gap-4 flex-grow">
+<div class="w-12 h-12 bg-[#F5F5F7] rounded-lg flex items-center justify-center text-text-muted border border-border">
+<span class="material-symbols-outlined" data-icon="ac_unit">ac_unit</span>
+</div>
+<div class="flex-grow">
+<div class="font-label-nav text-label-nav font-medium text-on-background">Cooler do Processador</div>
+<div class="font-label-small text-label-small text-text-muted mt-1">Opcional para este processador, mas recomendado.</div>
+</div>
+</div>
+<button class="bg-[#1A1A1A] text-white px-4 py-2 rounded-lg font-label-nav text-label-nav hover:bg-gray-800 transition-colors whitespace-nowrap">Selecionar</button>
+</div>
+<!-- Empty: Memória RAM -->
+<div class="bg-white p-card-padding rounded-xl border border-border flex items-center justify-between gap-4 hover:border-primary-fixed-dim hover:shadow-sm transition-all">
+<div class="flex items-center gap-4 flex-grow">
+<div class="w-12 h-12 bg-[#F5F5F7] rounded-lg flex items-center justify-center text-text-muted border border-border">
+<span class="material-symbols-outlined" data-icon="memory_alt">memory_alt</span>
+</div>
+<div class="flex-grow">
+<div class="font-label-nav text-label-nav font-medium text-on-background">Memória RAM</div>
+</div>
+</div>
+<button class="bg-[#1A1A1A] text-white px-4 py-2 rounded-lg font-label-nav text-label-nav hover:bg-gray-800 transition-colors whitespace-nowrap">Selecionar</button>
+</div>
+<!-- Empty: Placa de Vídeo -->
+<div class="bg-white p-card-padding rounded-xl border border-border flex items-center justify-between gap-4 hover:border-primary-fixed-dim hover:shadow-sm transition-all">
+<div class="flex items-center gap-4 flex-grow">
+<div class="w-12 h-12 bg-[#F5F5F7] rounded-lg flex items-center justify-center text-text-muted border border-border">
+<span class="material-symbols-outlined" data-icon="video_settings">video_settings</span>
+</div>
+<div class="flex-grow">
+<div class="font-label-nav text-label-nav font-medium text-on-background">Placa de Vídeo</div>
+</div>
+</div>
+<button class="bg-[#1A1A1A] text-white px-4 py-2 rounded-lg font-label-nav text-label-nav hover:bg-gray-800 transition-colors whitespace-nowrap">Selecionar</button>
+</div>
+<!-- Selected: Gabinete -->
+<div class="bg-white p-card-padding rounded-xl border border-primary-container shadow-[0_2px_12px_rgba(255,107,0,0.08)] flex items-center justify-between gap-4 group">
+<div class="flex items-center gap-4 flex-grow">
+<div class="w-12 h-12 bg-surface-container-low rounded-lg flex items-center justify-center text-primary-container border border-surface-variant">
+<span class="material-symbols-outlined" data-icon="kitchen">kitchen</span>
+</div>
+<div class="flex-grow">
+<div class="font-label-small text-label-small text-text-muted mb-1">Gabinete</div>
+<div class="font-label-nav text-label-nav font-bold">NZXT H5 Flow</div>
+<div class="font-label-small text-label-small text-text-muted mt-1 flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">storefront</span> Amazon
+                                </div>
+</div>
+<div class="text-right">
+<div class="font-headline-card text-headline-card text-primary-container">R$ 650,00</div>
+</div>
+</div>
+<div class="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-text-muted hover:text-primary-container hover:bg-surface-container-low rounded-lg transition-colors" title="Trocar">
+<span class="material-symbols-outlined">swap_horiz</span>
+</button>
+<button class="p-2 text-text-muted hover:text-danger hover:bg-error-container rounded-lg transition-colors" title="Remover">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+<!-- Empty: Armazenamento -->
+<div class="bg-white p-card-padding rounded-xl border border-border flex items-center justify-between gap-4 hover:border-primary-fixed-dim hover:shadow-sm transition-all">
+<div class="flex items-center gap-4 flex-grow">
+<div class="w-12 h-12 bg-[#F5F5F7] rounded-lg flex items-center justify-center text-text-muted border border-border">
+<span class="material-symbols-outlined" data-icon="hard_drive">hard_drive</span>
+</div>
+<div class="flex-grow">
+<div class="font-label-nav text-label-nav font-medium text-on-background">Armazenamento</div>
+</div>
+</div>
+<button class="bg-[#1A1A1A] text-white px-4 py-2 rounded-lg font-label-nav text-label-nav hover:bg-gray-800 transition-colors whitespace-nowrap">Selecionar</button>
+</div>
+<!-- Empty: Fonte -->
+<div class="bg-white p-card-padding rounded-xl border border-border flex items-center justify-between gap-4 hover:border-primary-fixed-dim hover:shadow-sm transition-all">
+<div class="flex items-center gap-4 flex-grow">
+<div class="w-12 h-12 bg-[#F5F5F7] rounded-lg flex items-center justify-center text-text-muted border border-border">
+<span class="material-symbols-outlined" data-icon="power">power</span>
+</div>
+<div class="flex-grow">
+<div class="font-label-nav text-label-nav font-medium text-on-background">Fonte</div>
+</div>
+</div>
+<button class="bg-[#1A1A1A] text-white px-4 py-2 rounded-lg font-label-nav text-label-nav hover:bg-gray-800 transition-colors whitespace-nowrap">Selecionar</button>
+</div>
+</div>
+<!-- Compatibility Alert -->
+<div class="bg-[#FFF4EC] border border-[#ffdbcc] rounded-xl p-4 flex items-start gap-3 mt-2">
+<span class="material-symbols-outlined text-primary-container">warning</span>
+<div>
+<h4 class="font-label-nav text-label-nav font-bold text-on-primary-fixed-variant">Atenção</h4>
+<p class="font-label-small text-label-small text-on-surface-variant mt-1">A fonte selecionada pode ser insuficiente para a GPU. Recomendamos uma fonte de no mínimo 650W para garantir estabilidade com os componentes atuais.</p>
+</div>
+</div>
+</div>
+<!-- Right Column (Sticky Summary) -->
+<div class="w-full lg:w-[35%] relative">
+<div class="bg-white rounded-xl border border-border shadow-[0_2px_12px_rgba(0,0,0,0.04)] sticky top-24 overflow-hidden flex flex-col h-fit">
+<div class="p-card-padding border-b border-border flex justify-between items-center">
+<h2 class="font-headline-card text-headline-card text-on-background">Resumo da Build</h2>
+<span class="bg-success/10 text-success border border-success/20 px-2 py-1 rounded-md font-badge text-badge flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Compatível
+                        </span>
+</div>
+<div class="p-card-padding flex-grow flex flex-col gap-4">
+<!-- Compact List -->
+<div class="flex justify-between items-start">
+<div>
+<div class="font-label-small text-label-small text-text-muted">Processador</div>
+<div class="font-label-nav text-label-nav text-on-background truncate max-w-[200px]" title="AMD Ryzen 5 7600X">Ryzen 5 7600X</div>
+</div>
+<div class="font-label-nav text-label-nav font-medium">R$ 1.495</div>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<div class="font-label-small text-label-small text-text-muted">Placa-Mãe</div>
+<div class="font-label-nav text-label-nav text-on-background truncate max-w-[200px]" title="ASUS TUF Gaming B650-Plus">TUF B650-Plus</div>
+</div>
+<div class="font-label-nav text-label-nav font-medium">R$ 1.250</div>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<div class="font-label-small text-label-small text-text-muted">Gabinete</div>
+<div class="font-label-nav text-label-nav text-on-background truncate max-w-[200px]" title="NZXT H5 Flow">NZXT H5 Flow</div>
+</div>
+<div class="font-label-nav text-label-nav font-medium">R$ 650</div>
+</div>
+<div class="h-px bg-border my-2"></div>
+<!-- Subtotals -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center font-label-small text-label-small text-text-muted">
+<span class="">Terabyte (1 item)</span>
+<span class="">R$ 1.495,00</span>
+</div>
+<div class="flex justify-between items-center font-label-small text-label-small text-text-muted">
+<span class="">KaBuM! (1 item)</span>
+<span class="">R$ 1.250,00</span>
+</div>
+<div class="flex justify-between items-center font-label-small text-label-small text-text-muted">
+<span class="">Amazon (1 item)</span>
+<span class="">R$ 650,00</span>
+</div>
+</div>
+<div class="h-px bg-border my-2"></div>
+<!-- Total -->
+<div class="flex justify-between items-end">
+<span class="font-label-nav text-label-nav text-on-background font-bold">Total</span>
+<span class="font-headline-section text-headline-section text-primary-container">R$ 3.395,00</span>
+</div>
+</div>
+<div class="p-card-padding bg-[#F5F5F7] flex flex-col gap-3">
+<button class="w-full bg-primary-container text-white h-12 rounded-lg font-label-nav text-label-nav font-bold hover:bg-[#e66000] transition-colors shadow-sm">
+                            Ver Melhores Preços
+                        </button>
+<button class="w-full bg-transparent border-2 border-primary-container text-primary-container h-12 rounded-lg font-label-nav text-label-nav font-bold hover:bg-surface-container-low transition-colors">
+                            Salvar Build
+                        </button>
+<button class="w-full bg-white border border-border text-on-background h-10 rounded-lg font-label-nav text-label-nav hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 mt-1">
+<span class="material-symbols-outlined text-[18px] text-primary-container">auto_awesome</span> Pedir Sugestão de IA
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer (Simulated) -->
+<footer class="bg-inverse-surface dark:bg-surface-container-lowest mt-auto border-t border-inverse-surface dark:border-on-background">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter px-margin-desktop py-section-padding max-w-container-max mx-auto">
+<div>
+<div class="mb-4"><img src="https://lh3.googleusercontent.com/aida/ADBb0uhATiLmGO8n2q4_w7aogYW2zpof799E_MuBSx8Zcaqqnlyio8TfKBODf-uxYO9VtRJrxNLQeI6NWZxo1Klxe2BJDJ3UAB6xv1JtpwyuqGIivjA2VFicyodjfaIwGkP_fYdGWnmCsIU6JDi-RbAeWYZ6ERcFXH-Gg1wEfduEF11AX_GuJhFKkNQtKIheVQ54W0X-s_hGUkKag76Gx2JXSrWf3AkrObNQYGHA8nHhwOIqbtuUnr0rKXhIoA" alt="Hardware Tracker" class="w-auto brightness-0 invert h-16"></div>
+<p class="font-body-main text-body-main text-surface-variant dark:text-secondary-fixed-dim">© 2024 Hardware Tracker. Engineering the future of PC building.</p>
+</div>
+<div class="flex gap-6 justify-start md:justify-end font-label-small text-label-small text-surface-variant dark:text-secondary-fixed-dim">
+<a class="hover:text-primary-fixed transition-colors duration-200" href="#">Privacy Policy</a>
+<a class="hover:text-primary-fixed transition-colors duration-200" href="#">Terms of Service</a>
+<a class="hover:text-primary-fixed transition-colors duration-200" href="#">Compatibility Guide</a>
+<a class="hover:text-primary-fixed transition-colors duration-200" href="#">Contact Support</a>
+</div>
+</div>
+</footer>
+
+
+
+
+
+
+</body></html>
