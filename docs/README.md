@@ -80,7 +80,23 @@ Bem-vindo à documentação centralizada do projeto Hardware Tracker! Este diret
 
 ---
 
-### 4. **TESTING.md** — Estratégia de Testes
+### 4. **ROADMAP.md** — Próximos Passos
+   - **Status:** ✅ Atualizado
+   - **Fase SDLC:** Planejamento Contínuo
+   - **Conteúdo:**
+     - Estado atual do projeto
+     - Blocos de trabalho priorizados (Backend, API, Infra, Frontend, Scraping)
+     - Checklist de tarefas pendentes por bloco
+
+   **Quando consultar:**
+   - Início de sessão (o que fazer a seguir?)
+   - Após concluir uma tarefa (o que vem depois?)
+
+   **Relacionados:** DATABASE.md, ARCHITECTURE.md, REQUIREMENTS.md
+
+---
+
+### 5. **TESTING.md** — Estratégia de Testes
    - **Status:** 🔄 Em Planejamento
    - **Fase SDLC:** Testes & Review
    - **Conteúdo:**
