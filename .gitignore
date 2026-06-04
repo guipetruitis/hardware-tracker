@@ -1,10 +1,10 @@
 # --- Claude / MCP ---
 .claude/
 .mcp.json
+skills-lock.json
 
 # --- Documentos internos ---
 Requisitos-Projeto/
-TRABALHAR_AQUI.md
 
 # --- Python / Django ---
 __pycache__/
