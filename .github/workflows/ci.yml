@@ -68,6 +68,7 @@ jobs:
 
       - name: Run tests
         env:
+          SECRET_KEY: django-insecure-ci-only-not-for-production
           DATABASE_URL: postgresql://hardware:hardware123@localhost:5432/hardware_tracker_test
           DJANGO_SETTINGS_MODULE: config.settings
         run: |
