@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class CommunityConfig(AppConfig):
-    name = 'community'
+    name = 'apps.community'
