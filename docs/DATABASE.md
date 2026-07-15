@@ -1,8 +1,8 @@
 # Modelagem de Banco de Dados - Hardware Tracker
 
-**Status:** Revisado — Sessão 2026-05-22  
-**Última Atualização:** 2026-05-22  
-**Versão:** 0.3  
+**Status:** Revisado — Sessão 2026-05-22
+**Última Atualização:** 2026-05-22
+**Versão:** 0.3
 **SGBD:** PostgreSQL 13+
 
 ---
@@ -74,7 +74,7 @@
           │ currency           │  │ product_url          │
           └────────────────────┘  │ scraped_at           │
                    │              │ updated_at           │
-                   └──────┬───────┘                      
+                   └──────┬───────┘                    
                           │ M:1
                           ▼
                    ┌────────────────┐
@@ -385,14 +385,14 @@ CREATE INDEX idx_price_alerts_hardware ON price_alerts(hardware_id) WHERE is_act
 
 A compatibilidade é verificada no backend Django comparando os campos `specifications` JSONB de cada peça selecionada na build. As regras implementadas no MVP:
 
-| Regra | Campo specs (peça A) | Comparação | Campo specs (peça B) |
-|-------|---------------------|------------|---------------------|
-| Socket CPU ↔ Placa-mãe | `cpu.specs->>'socket'` | == | `motherboard.specs->>'socket'` |
-| Tipo RAM ↔ Placa-mãe | `ram.specs->>'ddr_type'` | == | `motherboard.specs->>'ddr_type'` |
-| TDP CPU ≤ Cooler | `cpu.specs->>'tdp'` (int) | <= | `cooler.specs->>'tdp_capacity'` (int) |
-| Consumo total ≤ Fonte | soma TDP de todas as peças | <= | `psu.specs->>'wattage'` × 0.7 |
-| Form factor ↔ Gabinete | `motherboard.specs->>'form_factor'` | compatível | `case.specs->>'supported_form_factors'` (array) |
-| Comprimento GPU ≤ Gabinete | `gpu.specs->>'length_mm'` (int) | <= | `case.specs->>'max_gpu_length_mm'` (int) |
+| Regra                       | Campo specs (peça A)                 | Comparação | Campo specs (peça B)                             |
+| --------------------------- | ------------------------------------- | ------------ | ------------------------------------------------- |
+| Socket CPU ↔ Placa-mãe    | `cpu.specs->>'socket'`              | ==           | `motherboard.specs->>'socket'`                  |
+| Tipo RAM ↔ Placa-mãe      | `ram.specs->>'ddr_type'`            | ==           | `motherboard.specs->>'ddr_type'`                |
+| TDP CPU ≤ Cooler           | `cpu.specs->>'tdp'` (int)           | <=           | `cooler.specs->>'tdp_capacity'` (int)           |
+| Consumo total ≤ Fonte      | soma TDP de todas as peças           | <=           | `psu.specs->>'wattage'` × 0.7                  |
+| Form factor ↔ Gabinete     | `motherboard.specs->>'form_factor'` | compatível  | `case.specs->>'supported_form_factors'` (array) |
+| Comprimento GPU ≤ Gabinete | `gpu.specs->>'length_mm'` (int)     | <=           | `case.specs->>'max_gpu_length_mm'` (int)        |
 
 **Specs JSONB por categoria (exemplos):**
 
@@ -423,33 +423,33 @@ A compatibilidade é verificada no backend Django comparando os campos `specific
 
 ## 4. Constraints e Validações
 
-| Tabela | Campo | Constraint | Descrição |
-|--------|-------|-----------|-----------|
-| users | email | UNIQUE NOT NULL | Email único por conta |
-| hardware | name | NOT NULL | Nome obrigatório |
-| prices | price | > 0 | Preço atual sempre positivo |
-| price_history | status | IN ('available', 'unavailable') | Validado na camada Django |
-| builds | user_id | FK NOT NULL | Build deve ter dono |
-| build_components | quantity | > 0 | Quantidade mínima 1 |
-| build_votes | (build_id, user_id) | UNIQUE | 1 voto por usuário por build |
-| price_alerts | (user_id, hardware_id) | UNIQUE | 1 alerta por peça por usuário |
+| Tabela           | Campo                  | Constraint                      | Descrição                     |
+| ---------------- | ---------------------- | ------------------------------- | ------------------------------- |
+| users            | email                  | UNIQUE NOT NULL                 | Email único por conta          |
+| hardware         | name                   | NOT NULL                        | Nome obrigatório               |
+| prices           | price                  | > 0                             | Preço atual sempre positivo    |
+| price_history    | status                 | IN ('available', 'unavailable') | Validado na camada Django       |
+| builds           | user_id                | FK NOT NULL                     | Build deve ter dono             |
+| build_components | quantity               | > 0                             | Quantidade mínima 1            |
+| build_votes      | (build_id, user_id)    | UNIQUE                          | 1 voto por usuário por build   |
+| price_alerts     | (user_id, hardware_id) | UNIQUE                          | 1 alerta por peça por usuário |
 
 ---
 
 ## 5. Índices
 
-| Índice | Tabela | Colunas | Razão |
-|--------|--------|---------|-------|
-| idx_users_email | users | email | Login por email |
-| idx_hardware_category | hardware | category_id | Filtro por categoria no catálogo |
-| idx_hardware_specs | hardware | specifications (GIN) | Queries JSONB de compatibilidade |
-| idx_prices_updated | prices | updated_at DESC | Preços mais recentes |
-| idx_price_history_hardware_date | price_history | hardware_id, recorded_at DESC | Gráfico de histórico |
-| idx_builds_public_date | builds | is_public, created_at DESC | Ranking "Recentes" |
-| idx_builds_upvotes | builds | is_public, upvotes_count DESC | Ranking "Populares" |
-| idx_builds_use_type | builds | use_type (parcial: is_public=TRUE) | Filtro por uso na comunidade |
-| idx_build_votes_build | build_votes | build_id | Contagem de votos por build |
-| idx_price_alerts_hardware | price_alerts | hardware_id (parcial: is_active=TRUE) | Verificação diária de alertas |
+| Índice                         | Tabela        | Colunas                               | Razão                            |
+| ------------------------------- | ------------- | ------------------------------------- | --------------------------------- |
+| idx_users_email                 | users         | email                                 | Login por email                   |
+| idx_hardware_category           | hardware      | category_id                           | Filtro por categoria no catálogo |
+| idx_hardware_specs              | hardware      | specifications (GIN)                  | Queries JSONB de compatibilidade  |
+| idx_prices_updated              | prices        | updated_at DESC                       | Preços mais recentes             |
+| idx_price_history_hardware_date | price_history | hardware_id, recorded_at DESC         | Gráfico de histórico            |
+| idx_builds_public_date          | builds        | is_public, created_at DESC            | Ranking "Recentes"                |
+| idx_builds_upvotes              | builds        | is_public, upvotes_count DESC         | Ranking "Populares"               |
+| idx_builds_use_type             | builds        | use_type (parcial: is_public=TRUE)    | Filtro por uso na comunidade      |
+| idx_build_votes_build           | build_votes   | build_id                              | Contagem de votos por build       |
+| idx_price_alerts_hardware       | price_alerts  | hardware_id (parcial: is_active=TRUE) | Verificação diária de alertas  |
 
 ---
 
@@ -562,27 +562,27 @@ python manage.py migrate
 
 Apps Django planejados e suas tabelas principais:
 
-| App Django | Tabelas |
-|-----------|---------|
-| `hardware` | hardware, categories, stores, prices, price_history |
-| `builds` | builds, build_components, build_votes |
-| `community` | comments |
-| `users` (auth customizado) | users |
-| `scraping` | (sem models próprios — lê/escreve em hardware e prices) |
-| `alerts` | price_alerts |
-| `scraping` | coupons (coleta junto com preços) |
+| App Django                   | Tabelas                                                    |
+| ---------------------------- | ---------------------------------------------------------- |
+| `hardware`                 | hardware, categories, stores, prices, price_history        |
+| `builds`                   | builds, build_components, build_votes                      |
+| `community`                | comments                                                   |
+| `users` (auth customizado) | users                                                      |
+| `scraping`                 | (sem models próprios — lê/escreve em hardware e prices) |
+| `alerts`                   | price_alerts                                               |
+| `scraping`                 | coupons (coleta junto com preços)                         |
 
 ---
 
 ## 9. Próximos Passos
 
-1. [x] Revisar e alinhar esquema com User Stories e decisões de sessão
-2. [x] Modelagem discutida e validada com Guilherme — sessão 2026-05-22
+1. [X] Revisar e alinhar esquema com User Stories e decisões de sessão
+2. [X] Modelagem discutida e validada com Guilherme — sessão 2026-05-22
 3. [ ] Implementar models.py Django por app
-3. [ ] Criar migrations e rodar em ambiente local (Docker)
-4. [ ] Criar fixtures de seed (categorias, lojas, hardware populares)
-5. [ ] Testar queries de performance com EXPLAIN ANALYZE
-6. [ ] Configurar pgvector se RAG for implementado (Post-MVP)
+4. [ ] Criar migrations e rodar em ambiente local (Docker)
+5. [ ] Criar fixtures de seed (categorias, lojas, hardware populares)
+6. [ ] Testar queries de performance com EXPLAIN ANALYZE
+7. [ ] Configurar pgvector se RAG for implementado (Post-MVP)
 
 ---
 
@@ -592,3 +592,4 @@ Apps Django planejados e suas tabelas principais:
 - [PostgreSQL GIN Indexes](https://www.postgresql.org/docs/current/gin.html)
 - [Django Models](https://docs.djangoproject.com/en/stable/topics/db/models/)
 - [Database Normalization](https://en.wikipedia.org/wiki/Database_normalization)
+
