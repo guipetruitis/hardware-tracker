@@ -9,118 +9,108 @@
 
 ## 1. Diagrama ER (Entidade-Relacionamento)
 
-```
-┌────────────────────┐         ┌──────────────────────┐
-│       User         │◄────────┤        Build         │
-├────────────────────┤         ├──────────────────────┤
-│ id (PK)            │         │ id (PK)              │
-│ email (UNIQUE)     │         │ user_id (FK)         │
-│ username           │         │ name                 │
-│ password_hash      │         │ description          │
-│ avatar_url         │         │ use_type             │
-│ bio                │         │ share_token (UNIQUE) │
-│ telegram_chat_id   │         │ total_price          │
-│ is_active          │         │ is_public            │
-│ is_staff           │         │ upvotes_count        │
-│ created_at         │         │ views_count          │
-│ updated_at         │         │ created_at           │
-│ deleted_at         │         │ updated_at           │
-└────────────────────┘         │ deleted_at           │
-        │                      └──────────────────────┘
-        │                               │
-        │ 1:N (price_alerts)            │ 1:N
-        ▼                               ▼
-┌────────────────────┐     ┌──────────────────────┐
-│   PriceAlert       │     │   BuildComponent     │
-├────────────────────┤     ├──────────────────────┤
-│ id (PK)            │     │ id (PK)              │
-│ user_id (FK)       │     │ build_id (FK)        │
-│ hardware_id (FK)   │     │ hardware_id (FK)     │
-│ target_price       │     │ quantity             │
-│ is_active          │     │ price_at_creation    │
-│ triggered_at       │     │ created_at           │
-│ created_at         │     └──────────────────────┘
-└────────────────────┘               │
-                                     │ M:1
-                                     ▼
-              ┌──────────────────────────────────────┐
-              │             Hardware                 │
-              ├──────────────────────────────────────┤
-              │ id (PK)                              │
-              │ name                                 │
-              │ category_id (FK)                     │
-              │ manufacturer                         │
-              │ model                                │
-              │ sku                                  │
-              │ specifications (JSONB)               │
-              │ image_url                            │
-              │ description                          │
-              │ created_at                           │
-              │ updated_at                           │
-              │ deleted_at                           │
-              └──────────────────────────────────────┘
-                       │                    │
-                       │ 1:N               │ 1:N
-                       ▼                    ▼
-          ┌────────────────────┐  ┌──────────────────────┐
-          │   PriceHistory     │  │   Price (atual)      │
-          ├────────────────────┤  ├──────────────────────┤
-          │ id (PK)            │  │ id (PK)              │
-          │ hardware_id (FK)   │  │ hardware_id (FK)     │
-          │ store_id (FK)      │  │ store_id (FK)        │
-          │ price (nullable)   │  │ price                │
-          │ status             │  │ original_price       │
-          │ recorded_at        │  │ in_stock             │
-          │ currency           │  │ product_url          │
-          └────────────────────┘  │ scraped_at           │
-                   │              │ updated_at           │
-                   └──────┬───────┘                    
-                          │ M:1
-                          ▼
-                   ┌────────────────┐
-                   │     Store      │
-                   ├────────────────┤
-                   │ id (PK)        │
-                   │ name           │
-                   │ slug           │
-                   │ url            │
-                   │ logo_url       │
-                   │ is_active      │
-                   └────────────────┘
+```mermaid
+erDiagram
+    USERS ||--o{ BUILDS : "cria"
+    USERS ||--o{ PRICE_ALERTS : "define"
+    USERS ||--o{ BUILD_VOTES : "vota"
+    USERS ||--o{ COMMENTS : "escreve"
+    CATEGORIES ||--o{ HARDWARE : "classifica"
+    HARDWARE ||--o{ PRICES : "preco atual"
+    HARDWARE ||--o{ PRICE_HISTORY : "historico"
+    HARDWARE ||--o{ BUILD_COMPONENTS : "compoe"
+    HARDWARE ||--o{ COUPONS : "possui"
+    HARDWARE ||--o{ PRICE_ALERTS : "alvo de"
+    STORES ||--o{ PRICES : "oferta"
+    STORES ||--o{ PRICE_HISTORY : "registra"
+    STORES ||--o{ COUPONS : "emite"
+    BUILDS ||--o{ BUILD_COMPONENTS : "contem"
+    BUILDS ||--o{ BUILD_VOTES : "recebe"
+    BUILDS ||--o{ COMMENTS : "recebe"
+    COMMENTS ||--o{ COMMENTS : "responde"
 
-┌──────────────────────────────────────┐
-│            Category                  │
-├──────────────────────────────────────┤
-│ id (PK)                              │
-│ name (Processador, GPU, RAM, etc.)   │
-│ slug                                 │
-│ icon_url                             │
-│ order                                │
-└──────────────────────────────────────┘
-
-┌──────────────────────────────────────┐
-│            Comment                   │
-├──────────────────────────────────────┤
-│ id (PK)                              │
-│ build_id (FK)                        │
-│ user_id (FK)                         │
-│ parent_id (FK, self-ref)             │
-│ content                              │
-│ likes_count                          │
-│ created_at                           │
-│ updated_at                           │
-│ deleted_at                           │
-└──────────────────────────────────────┘
-
-┌──────────────────────────────────────┐
-│            BuildVote                 │
-├──────────────────────────────────────┤
-│ id (PK)                              │
-│ build_id (FK)                        │
-│ user_id (FK)                         │
-│ created_at                           │
-│ UNIQUE(build_id, user_id)            │
-└──────────────────────────────────────┘
+    USERS {
+        bigint id PK
+        varchar email UK
+        varchar username UK
+        boolean is_staff
+        timestamp deleted_at
+    }
+    CATEGORIES {
+        bigint id PK
+        varchar name UK
+        varchar slug UK
+        int order
+    }
+    HARDWARE {
+        bigint id PK
+        bigint category_id FK
+        varchar name
+        varchar manufacturer
+        jsonb specifications
+        timestamp deleted_at
+    }
+    STORES {
+        bigint id PK
+        varchar name UK
+        varchar slug UK
+        boolean is_active
+    }
+    PRICES {
+        bigint id PK
+        bigint hardware_id FK
+        bigint store_id FK
+        decimal price
+        boolean in_stock
+        timestamp scraped_at
+    }
+    PRICE_HISTORY {
+        bigint id PK
+        bigint hardware_id FK
+        bigint store_id FK
+        decimal price
+        varchar status
+        timestamp recorded_at
+    }
+    BUILDS {
+        bigint id PK
+        bigint user_id FK
+        varchar name
+        varchar share_token UK
+        boolean is_public
+        int upvotes_count
+    }
+    BUILD_COMPONENTS {
+        bigint id PK
+        bigint build_id FK
+        bigint hardware_id FK
+        int quantity
+    }
+    BUILD_VOTES {
+        bigint id PK
+        bigint build_id FK
+        bigint user_id FK
+    }
+    COMMENTS {
+        bigint id PK
+        bigint build_id FK
+        bigint user_id FK
+        bigint parent_id FK
+        text content
+    }
+    COUPONS {
+        bigint id PK
+        bigint hardware_id FK
+        bigint store_id FK
+        varchar code
+        decimal discount_value
+    }
+    PRICE_ALERTS {
+        bigint id PK
+        bigint user_id FK
+        bigint hardware_id FK
+        decimal target_price
+    }
 ```
 
 ---
@@ -592,4 +582,3 @@ Apps Django planejados e suas tabelas principais:
 - [PostgreSQL GIN Indexes](https://www.postgresql.org/docs/current/gin.html)
 - [Django Models](https://docs.djangoproject.com/en/stable/topics/db/models/)
 - [Database Normalization](https://en.wikipedia.org/wiki/Database_normalization)
-
