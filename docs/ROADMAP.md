@@ -11,14 +11,14 @@
 
 | Área | Status |
 |---|---|
-| Scaffold Django (6 apps: users, hardware, builds, community, alerts, scraping) | ✅ Feito |
+| Scaffold Django (5 apps: users, hardware, builds, alerts, scraping) | ✅ Feito |
 | Model `User` customizado + `AUTH_USER_MODEL` | ✅ Feito |
 | Docker + docker-compose (dev local) | ✅ Feito |
 | CI básico (GitHub Actions: checkout@v5, setup-python@v6, flake8) | ✅ Feito |
 | Documentação (REQUIREMENTS, ARCHITECTURE, DATABASE, TESTING, SECURITY_AUDIT) | ✅ Feito |
 | Models do app `hardware` (Category, Hardware, Store, Price, PriceHistory) | 🔶 Em andamento — não commitado, ver pendências da Sessão 1 |
 | `admin.py` do app `hardware` | 🔲 Pendente |
-| Models de `builds`, `community`, `alerts`, `scraping` (Coupon) | 🔲 Pendente — stubs vazios |
+| Models de `builds`, `alerts`, `scraping` (Coupon) | 🔲 Pendente — stubs vazios |
 | Correções do Security Audit 2026-06-03 (8 itens) | 🔲 Pendente — bloqueador antes de deploy/frontend |
 | API REST (DRF) | 🔲 Não iniciado |
 | Autenticação (JWT) | 🔲 Não iniciado |
@@ -45,24 +45,21 @@
 - [ ] Commit + PR para `develop`
 
 ### Sessão 2: `feat/builds-models`
-- `Build`, `BuildComponent`, `BuildVote` (constraints: `quantity > 0`, unique por `build_id + user_id` em votes)
+- `Build`, `BuildComponent` (constraint: `quantity > 0`) — builds são privadas, sem compartilhamento público nem votação
 
-### Sessão 3: `feat/community-models`
-- `Comment`
-
-### Sessão 4: `feat/alerts-models`
+### Sessão 3: `feat/alerts-models`
 - `PriceAlert` (unique por `user_id + hardware_id`)
 
-### Sessão 5: `feat/coupons-model`
+### Sessão 4: `feat/coupons-model`
 - `Coupon` no app `scraping` (se não entrou na Sessão 1)
 
-> Essas quatro sessões são pequenas — bom momento para discutir se compensa agrupar 2-3 numa PR só ou manter granular por app.
+> Essas três sessões são pequenas — bom momento para discutir se compensa agrupar 2-3 numa PR só ou manter granular por app.
 
 ---
 
 ## Fase 2 — Segurança (bloqueador)
 
-### Sessão 6: `fix/security`
+### Sessão 5: `fix/security`
 
 Referência completa: `docs/SECURITY_AUDIT_2026-06-03.md`. Fazer **antes** de conectar o frontend ou subir qualquer ambiente além do dev local.
 
@@ -84,23 +81,20 @@ Referência completa: `docs/SECURITY_AUDIT_2026-06-03.md`. Fazer **antes** de co
 
 **Depende de:** Fases 1 e 2.
 
-### Sessão 7: `feat/hardware-api`
+### Sessão 6: `feat/hardware-api`
 - Serializers + ViewSets (list/retrieve) para hardware, categories, stores, prices
 - Rotas em `urls.py`
 - Testar via curl/Postman/Insomnia
 
-### Sessão 8: `feat/auth`
+### Sessão 7: `feat/auth`
 - Registro/login com JWT (`djangorestframework-simplejwt`), tokens em cookies `HttpOnly`
 - Proteção de endpoints (`@login_required` / permission classes)
 - Referência: `CLAUDE.md` Seção 8.4 (`jwt.verify()` vs `jwt.decode()`, autenticação ≠ autorização)
 
-### Sessão 9: `feat/builds-api`
-- CRUD de builds + componentes, cálculo de preço total, votos
+### Sessão 8: `feat/builds-api`
+- CRUD de builds + componentes, cálculo de preço total (builds privadas, sem votos)
 
-### Sessão 10: `feat/community-api`
-- Comentários, ranking (recentes/populares)
-
-### Sessão 11: `feat/alerts-api`
+### Sessão 9: `feat/alerts-api`
 - CRUD de alertas de preço
 
 ---
@@ -146,8 +140,8 @@ Referência completa: `docs/SECURITY_AUDIT_2026-06-03.md`. Fazer **antes** de co
 ### Sessão: `feat/frontend-builder`
 - PC Builder (seleção de peças) + verificador de compatibilidade em tempo real
 
-### Sessão: `feat/frontend-community`
-- Ranking de builds, comentários, dashboard do usuário
+### Sessão: `feat/frontend-dashboard`
+- Dashboard do usuário (minhas builds, preferências)
 
 ---
 

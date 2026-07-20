@@ -98,7 +98,6 @@ Altura padrão: 48px (large), 36px (medium), 28px (small)
 | Login / Cadastro       | Alta      | Pendente       | —                                    |
 | PC Builder             | Alta      | Pendente       | —                                    |
 | Página de Peça         | Alta      | Pendente       | —                                    |
-| Comunidade / Ranking   | Média     | Pendente       | —                                    |
 | Dashboard do Usuário   | Média     | Pendente       | —                                    |
 
 ---
@@ -109,13 +108,11 @@ Altura padrão: 48px (large), 36px (medium), 28px (small)
 Home
 ├── → PC Builder (CTA hero / navbar)
 ├── → Página de Peça (card de oferta)
-├── → Comunidade (card de build / navbar)
 └── → Login (botão navbar)
     └── → Dashboard (pós-login)
 
 PC Builder
-├── → Página de Peça (clique em componente)
-└── → Comunidade (publicar build)
+└── → Página de Peça (clique em componente)
 ```
 
 ---

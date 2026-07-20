@@ -70,7 +70,6 @@ frontend/
 │   ├── Home
 │   ├── Login
 │   ├── BuildCreator
-│   ├── Community
 │   └── PieceDetails
 ├── services/           # Integração com API
 │   └── api.js
@@ -94,7 +93,6 @@ frontend/
 - `auth` — Autenticação de usuários
 - `hardware` — Gestão de peças, comparador de preços
 - `builds` — Criação e gerenciamento de builds
-- `community` — Builds públicas, comentários, ranking
 - `scraping` — Tasks de scraping de preços
 - `ai_service` — Integração com LLMs, sugestões
 
@@ -110,7 +108,6 @@ backend/
 ├── auth/                # App de autenticação
 ├── hardware/            # App de hardware
 ├── builds/              # App de builds
-├── community/           # App de comunidade
 ├── ai_service/          # App de IA
 ├── scraping/            # App de scraping
 ├── utils/               # Utilitários
@@ -127,7 +124,6 @@ backend/
 - `PriceHistory` — Histórico de preços
 - `Build` — Builds criadas por usuários
 - `Compatibility` — Regras de compatibilidade
-- `Comment` — Comentários em builds
 
 ---
 
