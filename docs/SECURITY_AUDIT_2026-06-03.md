@@ -298,7 +298,6 @@ LOGGING = {
 | IA/LLM (Groq, Claude, Gemini) | Domínio 12 completo | Rate limit por usuário, `max_tokens` sempre definido, sem user input direto no system prompt |
 | Upload de imagens de builds | Domínio 11 completo | UUID no filename, validação por magic bytes, reprocessar com Pillow, strip EXIF |
 | Sistema de cupons / preços | Business Logic | Preços **sempre** no servidor; cupons com expiração e single-use enforced no banco |
-| Community / comentários | XSS (A03) | Sanitizar output antes de renderizar; nunca `innerHTML` com conteúdo do usuário; usar `DOMPurify` |
 | Admin panel Django | A01 — Broken Access Control | Trocar URL padrão `/admin/`, restringir por IP em produção, habilitar 2FA para superusers |
 
 ---

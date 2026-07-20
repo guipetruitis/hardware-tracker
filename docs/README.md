@@ -11,7 +11,7 @@ Bem-vindo à documentação centralizada do projeto Hardware Tracker! Este diret
    - **Fase SDLC:** Levantamento de Requisitos
    - **Conteúdo:**
      - Visão geral do projeto
-     - Funcionalidades principais (core, PC Builder, comunidade, distribuição)
+     - Funcionalidades principais (core, PC Builder, distribuição)
      - Componentes suportados
      - Estrutura de telas (Home, Login, etc.)
      - Requisitos de UI/UX

@@ -59,22 +59,7 @@ Hardware Tracker é uma plataforma brasileira de comparação de preços e monta
   - Faixa de preço
   - Capacidade (RAM, Armazenamento)
 
-### 2.3 Comunidade
-
-- **Builds Públicas**
-  - Compartilhamento de builds criadas
-  - Ranking de builds (recentes, populares, all-time)
-
-- **Sistema de Comentários**
-  - Sugestões de melhoria
-  - Discussões na comunidade
-
-- **Leaderboard**
-  - Melhores builds do mês
-  - Melhores builds de todos os tempos
-  - Builds mais recentes
-
-### 2.4 Distribuição (Futuro)
+### 2.3 Distribuição (Futuro)
 
 - **Extensão de Navegador**
   - Comparador de preços ao navegar sites (estilo Bilômetro)
@@ -120,11 +105,9 @@ Hardware Tracker é uma plataforma brasileira de comparação de preços e monta
   - Dicas de montagem
   - Destaque para sistema de teste de compatibilidade
   - Destaque para comparador de preços
-  - Destaque para comunidade
 
 - **Conteúdo Principal**
   - Ofertas em destaque
-  - Builds recentes da comunidade
 
 - **Estatísticas**
   - Total de testes de compatibilidade realizados
@@ -139,7 +122,6 @@ Hardware Tracker é uma plataforma brasileira de comparação de preços e monta
 - **Login/Autenticação**
 - **Tela de Build (criação/visualização)**
 - **Tela de Peças (detalhes, histórico, cupons)**
-- **Tela de Comunidade (ranking, comentários)**
 - **Dashboard de Usuário (meus builds, preferências)**
 
 ### 4.3 Rodapé (Footer)
@@ -198,14 +180,12 @@ Hardware Tracker é uma plataforma brasileira de comparação de preços e monta
 - [ ] Home page com design responsivo
 - [ ] Login de usuário (email/senha)
 - [ ] Criação de builds simples
-- [ ] Exibição de builds da comunidade
 
 ### Post-MVP
 
 - [ ] IA integrada com sugestões
 - [ ] Extensão de navegador
 - [ ] Bot Telegram (alertas de preço individuais e canal de ofertas gerais)
-- [ ] Sistema de comentários robusto
 
 ---
 
@@ -218,7 +198,6 @@ Hardware Tracker é uma plataforma brasileira de comparação de preços e monta
 | Autenticação | **Alta** | Sprint 2 | Média |
 | PC Builder básico | **Alta** | Sprint 2-3 | Alta |
 | Verificador de compatibilidade | **Alta** | Sprint 3 | Alta |
-| Comunidade (builds públicas) | **Média** | Sprint 4 | Média |
 | IA (sugestões) | **Média** | Sprint 4-5 | Muito Alta |
 | Histórico de preços | **Média** | Sprint 5 | Média |
 | Bot Telegram | **Baixa** | Sprint 6+ | Média |

@@ -1,126 +1,96 @@
 # Modelagem de Banco de Dados - Hardware Tracker
 
-**Status:** Revisado — Sessão 2026-05-22  
-**Última Atualização:** 2026-05-22  
-**Versão:** 0.3  
+**Status:** Revisado — Sessão 2026-05-22
+**Última Atualização:** 2026-05-22
+**Versão:** 0.3
 **SGBD:** PostgreSQL 13+
 
 ---
 
 ## 1. Diagrama ER (Entidade-Relacionamento)
 
-```
-┌────────────────────┐         ┌──────────────────────┐
-│       User         │◄────────┤        Build         │
-├────────────────────┤         ├──────────────────────┤
-│ id (PK)            │         │ id (PK)              │
-│ email (UNIQUE)     │         │ user_id (FK)         │
-│ username           │         │ name                 │
-│ password_hash      │         │ description          │
-│ avatar_url         │         │ use_type             │
-│ bio                │         │ share_token (UNIQUE) │
-│ telegram_chat_id   │         │ total_price          │
-│ is_active          │         │ is_public            │
-│ is_staff           │         │ upvotes_count        │
-│ created_at         │         │ views_count          │
-│ updated_at         │         │ created_at           │
-│ deleted_at         │         │ updated_at           │
-└────────────────────┘         │ deleted_at           │
-        │                      └──────────────────────┘
-        │                               │
-        │ 1:N (price_alerts)            │ 1:N
-        ▼                               ▼
-┌────────────────────┐     ┌──────────────────────┐
-│   PriceAlert       │     │   BuildComponent     │
-├────────────────────┤     ├──────────────────────┤
-│ id (PK)            │     │ id (PK)              │
-│ user_id (FK)       │     │ build_id (FK)        │
-│ hardware_id (FK)   │     │ hardware_id (FK)     │
-│ target_price       │     │ quantity             │
-│ is_active          │     │ price_at_creation    │
-│ triggered_at       │     │ created_at           │
-│ created_at         │     └──────────────────────┘
-└────────────────────┘               │
-                                     │ M:1
-                                     ▼
-              ┌──────────────────────────────────────┐
-              │             Hardware                 │
-              ├──────────────────────────────────────┤
-              │ id (PK)                              │
-              │ name                                 │
-              │ category_id (FK)                     │
-              │ manufacturer                         │
-              │ model                                │
-              │ sku                                  │
-              │ specifications (JSONB)               │
-              │ image_url                            │
-              │ description                          │
-              │ created_at                           │
-              │ updated_at                           │
-              │ deleted_at                           │
-              └──────────────────────────────────────┘
-                       │                    │
-                       │ 1:N               │ 1:N
-                       ▼                    ▼
-          ┌────────────────────┐  ┌──────────────────────┐
-          │   PriceHistory     │  │   Price (atual)      │
-          ├────────────────────┤  ├──────────────────────┤
-          │ id (PK)            │  │ id (PK)              │
-          │ hardware_id (FK)   │  │ hardware_id (FK)     │
-          │ store_id (FK)      │  │ store_id (FK)        │
-          │ price (nullable)   │  │ price                │
-          │ status             │  │ original_price       │
-          │ recorded_at        │  │ in_stock             │
-          │ currency           │  │ product_url          │
-          └────────────────────┘  │ scraped_at           │
-                   │              │ updated_at           │
-                   └──────┬───────┘                      
-                          │ M:1
-                          ▼
-                   ┌────────────────┐
-                   │     Store      │
-                   ├────────────────┤
-                   │ id (PK)        │
-                   │ name           │
-                   │ slug           │
-                   │ url            │
-                   │ logo_url       │
-                   │ is_active      │
-                   └────────────────┘
+```mermaid
+erDiagram
+    USERS ||--o{ BUILDS : "cria"
+    USERS ||--o{ PRICE_ALERTS : "define"
+    CATEGORIES ||--o{ HARDWARE : "classifica"
+    HARDWARE ||--o{ PRICES : "preco atual"
+    HARDWARE ||--o{ PRICE_HISTORY : "historico"
+    HARDWARE ||--o{ BUILD_COMPONENTS : "compoe"
+    HARDWARE ||--o{ COUPONS : "possui"
+    HARDWARE ||--o{ PRICE_ALERTS : "alvo de"
+    STORES ||--o{ PRICES : "oferta"
+    STORES ||--o{ PRICE_HISTORY : "registra"
+    STORES ||--o{ COUPONS : "emite"
+    BUILDS ||--o{ BUILD_COMPONENTS : "contem"
 
-┌──────────────────────────────────────┐
-│            Category                  │
-├──────────────────────────────────────┤
-│ id (PK)                              │
-│ name (Processador, GPU, RAM, etc.)   │
-│ slug                                 │
-│ icon_url                             │
-│ order                                │
-└──────────────────────────────────────┘
-
-┌──────────────────────────────────────┐
-│            Comment                   │
-├──────────────────────────────────────┤
-│ id (PK)                              │
-│ build_id (FK)                        │
-│ user_id (FK)                         │
-│ parent_id (FK, self-ref)             │
-│ content                              │
-│ likes_count                          │
-│ created_at                           │
-│ updated_at                           │
-│ deleted_at                           │
-└──────────────────────────────────────┘
-
-┌──────────────────────────────────────┐
-│            BuildVote                 │
-├──────────────────────────────────────┤
-│ id (PK)                              │
-│ build_id (FK)                        │
-│ user_id (FK)                         │
-│ created_at                           │
-│ UNIQUE(build_id, user_id)            │
-└──────────────────────────────────────┘
+    USERS {
+        bigint id PK
+        varchar email UK
+        varchar username UK
+        boolean is_staff
+        timestamp deleted_at
+    }
+    CATEGORIES {
+        bigint id PK
+        varchar name UK
+        varchar slug UK
+        int order
+    }
+    HARDWARE {
+        bigint id PK
+        bigint category_id FK
+        varchar name
+        varchar manufacturer
+        jsonb specifications
+        timestamp deleted_at
+    }
+    STORES {
+        bigint id PK
+        varchar name UK
+        varchar slug UK
+        boolean is_active
+    }
+    PRICES {
+        bigint id PK
+        bigint hardware_id FK
+        bigint store_id FK
+        decimal price
+        boolean in_stock
+        timestamp scraped_at
+    }
+    PRICE_HISTORY {
+        bigint id PK
+        bigint hardware_id FK
+        bigint store_id FK
+        decimal price
+        varchar status
+        timestamp recorded_at
+    }
+    BUILDS {
+        bigint id PK
+        bigint user_id FK
+        varchar name
+    }
+    BUILD_COMPONENTS {
+        bigint id PK
+        bigint build_id FK
+        bigint hardware_id FK
+        int quantity
+    }
+    COUPONS {
+        bigint id PK
+        bigint hardware_id FK
+        bigint store_id FK
+        varchar code
+        decimal discount_value
+    }
+    PRICE_ALERTS {
+        bigint id PK
+        bigint user_id FK
+        bigint hardware_id FK
+        decimal target_price
+    }
 ```
 
 ---
@@ -260,21 +230,14 @@ CREATE TABLE builds (
     name          VARCHAR(255) NOT NULL,
     description   TEXT,
     use_type      VARCHAR(50) NULL,            -- 'gaming', 'work', 'streaming', 'office' (US-41)
-    share_token   VARCHAR(64) UNIQUE NULL,     -- token para URL pública compartilhável (US-34)
     total_price   DECIMAL(12,2),
-    is_public     BOOLEAN DEFAULT FALSE,
-    upvotes_count INT DEFAULT 0,               -- contador denormalizado para performance
-    views_count   INT DEFAULT 0,
     created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     deleted_at    TIMESTAMP NULL
 );
 
-CREATE INDEX idx_builds_user        ON builds(user_id);
-CREATE INDEX idx_builds_public_date ON builds(is_public, created_at DESC);
-CREATE INDEX idx_builds_upvotes     ON builds(is_public, upvotes_count DESC);
-CREATE INDEX idx_builds_share_token ON builds(share_token) WHERE share_token IS NOT NULL;
-CREATE INDEX idx_builds_use_type    ON builds(use_type) WHERE is_public = TRUE;
+CREATE INDEX idx_builds_user     ON builds(user_id);
+CREATE INDEX idx_builds_use_type ON builds(use_type);
 ```
 
 ### 2.8 BuildComponents
@@ -294,46 +257,7 @@ CREATE TABLE build_components (
 CREATE INDEX idx_build_components_build ON build_components(build_id);
 ```
 
-### 2.9 BuildVotes
-
-```sql
--- US-43: 1 voto por usuário por build, removível.
--- upvotes_count em builds é atualizado via trigger ou na camada de serviço.
-
-CREATE TABLE build_votes (
-    id         BIGSERIAL PRIMARY KEY,
-    build_id   BIGINT NOT NULL REFERENCES builds(id) ON DELETE CASCADE,
-    user_id    BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    UNIQUE(build_id, user_id)
-);
-
-CREATE INDEX idx_build_votes_build ON build_votes(build_id);
-CREATE INDEX idx_build_votes_user  ON build_votes(user_id);
-```
-
-### 2.10 Comments
-
-```sql
-CREATE TABLE comments (
-    id          BIGSERIAL PRIMARY KEY,
-    build_id    BIGINT NOT NULL REFERENCES builds(id) ON DELETE CASCADE,
-    user_id     BIGINT NOT NULL REFERENCES users(id),
-    parent_id   BIGINT REFERENCES comments(id) ON DELETE CASCADE,  -- respostas aninhadas
-    content     TEXT NOT NULL,
-    likes_count INT DEFAULT 0,
-    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    deleted_at  TIMESTAMP NULL
-);
-
-CREATE INDEX idx_comments_build ON comments(build_id);
-CREATE INDEX idx_comments_user  ON comments(user_id);
-CREATE INDEX idx_comments_date  ON comments(created_at DESC);
-```
-
-### 2.11 Coupons
+### 2.9 Coupons
 
 ```sql
 -- Cupons coletados via scraping, vinculados a um produto em uma loja específica.
@@ -356,7 +280,7 @@ CREATE INDEX idx_coupons_hardware ON coupons(hardware_id) WHERE is_active = TRUE
 CREATE INDEX idx_coupons_store    ON coupons(store_id) WHERE is_active = TRUE;
 ```
 
-### 2.12 PriceAlerts (Could Have)
+### 2.10 PriceAlerts (Could Have)
 
 ```sql
 -- US-26: usuário define preço-alvo; bot Telegram notifica quando atingido.
@@ -385,14 +309,14 @@ CREATE INDEX idx_price_alerts_hardware ON price_alerts(hardware_id) WHERE is_act
 
 A compatibilidade é verificada no backend Django comparando os campos `specifications` JSONB de cada peça selecionada na build. As regras implementadas no MVP:
 
-| Regra | Campo specs (peça A) | Comparação | Campo specs (peça B) |
-|-------|---------------------|------------|---------------------|
-| Socket CPU ↔ Placa-mãe | `cpu.specs->>'socket'` | == | `motherboard.specs->>'socket'` |
-| Tipo RAM ↔ Placa-mãe | `ram.specs->>'ddr_type'` | == | `motherboard.specs->>'ddr_type'` |
-| TDP CPU ≤ Cooler | `cpu.specs->>'tdp'` (int) | <= | `cooler.specs->>'tdp_capacity'` (int) |
-| Consumo total ≤ Fonte | soma TDP de todas as peças | <= | `psu.specs->>'wattage'` × 0.7 |
-| Form factor ↔ Gabinete | `motherboard.specs->>'form_factor'` | compatível | `case.specs->>'supported_form_factors'` (array) |
-| Comprimento GPU ≤ Gabinete | `gpu.specs->>'length_mm'` (int) | <= | `case.specs->>'max_gpu_length_mm'` (int) |
+| Regra                       | Campo specs (peça A)                 | Comparação | Campo specs (peça B)                             |
+| --------------------------- | ------------------------------------- | ------------ | ------------------------------------------------- |
+| Socket CPU ↔ Placa-mãe    | `cpu.specs->>'socket'`              | ==           | `motherboard.specs->>'socket'`                  |
+| Tipo RAM ↔ Placa-mãe      | `ram.specs->>'ddr_type'`            | ==           | `motherboard.specs->>'ddr_type'`                |
+| TDP CPU ≤ Cooler           | `cpu.specs->>'tdp'` (int)           | <=           | `cooler.specs->>'tdp_capacity'` (int)           |
+| Consumo total ≤ Fonte      | soma TDP de todas as peças           | <=           | `psu.specs->>'wattage'` × 0.7                  |
+| Form factor ↔ Gabinete     | `motherboard.specs->>'form_factor'` | compatível  | `case.specs->>'supported_form_factors'` (array) |
+| Comprimento GPU ≤ Gabinete | `gpu.specs->>'length_mm'` (int)     | <=           | `case.specs->>'max_gpu_length_mm'` (int)        |
 
 **Specs JSONB por categoria (exemplos):**
 
@@ -423,33 +347,29 @@ A compatibilidade é verificada no backend Django comparando os campos `specific
 
 ## 4. Constraints e Validações
 
-| Tabela | Campo | Constraint | Descrição |
-|--------|-------|-----------|-----------|
-| users | email | UNIQUE NOT NULL | Email único por conta |
-| hardware | name | NOT NULL | Nome obrigatório |
-| prices | price | > 0 | Preço atual sempre positivo |
-| price_history | status | IN ('available', 'unavailable') | Validado na camada Django |
-| builds | user_id | FK NOT NULL | Build deve ter dono |
-| build_components | quantity | > 0 | Quantidade mínima 1 |
-| build_votes | (build_id, user_id) | UNIQUE | 1 voto por usuário por build |
-| price_alerts | (user_id, hardware_id) | UNIQUE | 1 alerta por peça por usuário |
+| Tabela           | Campo                  | Constraint                      | Descrição                     |
+| ---------------- | ---------------------- | ------------------------------- | ------------------------------- |
+| users            | email                  | UNIQUE NOT NULL                 | Email único por conta          |
+| hardware         | name                   | NOT NULL                        | Nome obrigatório               |
+| prices           | price                  | > 0                             | Preço atual sempre positivo    |
+| price_history    | status                 | IN ('available', 'unavailable') | Validado na camada Django       |
+| builds           | user_id                | FK NOT NULL                     | Build deve ter dono             |
+| build_components | quantity               | > 0                             | Quantidade mínima 1            |
+| price_alerts     | (user_id, hardware_id) | UNIQUE                          | 1 alerta por peça por usuário |
 
 ---
 
 ## 5. Índices
 
-| Índice | Tabela | Colunas | Razão |
-|--------|--------|---------|-------|
-| idx_users_email | users | email | Login por email |
-| idx_hardware_category | hardware | category_id | Filtro por categoria no catálogo |
-| idx_hardware_specs | hardware | specifications (GIN) | Queries JSONB de compatibilidade |
-| idx_prices_updated | prices | updated_at DESC | Preços mais recentes |
-| idx_price_history_hardware_date | price_history | hardware_id, recorded_at DESC | Gráfico de histórico |
-| idx_builds_public_date | builds | is_public, created_at DESC | Ranking "Recentes" |
-| idx_builds_upvotes | builds | is_public, upvotes_count DESC | Ranking "Populares" |
-| idx_builds_use_type | builds | use_type (parcial: is_public=TRUE) | Filtro por uso na comunidade |
-| idx_build_votes_build | build_votes | build_id | Contagem de votos por build |
-| idx_price_alerts_hardware | price_alerts | hardware_id (parcial: is_active=TRUE) | Verificação diária de alertas |
+| Índice                         | Tabela        | Colunas                               | Razão                            |
+| ------------------------------- | ------------- | ------------------------------------- | --------------------------------- |
+| idx_users_email                 | users         | email                                 | Login por email                   |
+| idx_hardware_category           | hardware      | category_id                           | Filtro por categoria no catálogo |
+| idx_hardware_specs              | hardware      | specifications (GIN)                  | Queries JSONB de compatibilidade  |
+| idx_prices_updated              | prices        | updated_at DESC                       | Preços mais recentes             |
+| idx_price_history_hardware_date | price_history | hardware_id, recorded_at DESC         | Gráfico de histórico            |
+| idx_builds_use_type             | builds        | use_type                              | Filtro por uso                   |
+| idx_price_alerts_hardware       | price_alerts  | hardware_id (parcial: is_active=TRUE) | Verificação diária de alertas  |
 
 ---
 
@@ -491,27 +411,7 @@ WHERE hardware_id = $1
   AND store_id    = $2;
 ```
 
-### 6.4 Ranking de builds populares com filtro por uso
-
-```sql
-SELECT b.*, u.username, u.avatar_url
-FROM builds b
-JOIN users u ON b.user_id = u.id
-WHERE b.is_public = TRUE
-  AND ($1::VARCHAR IS NULL OR b.use_type = $1)   -- filtro opcional por uso
-ORDER BY b.upvotes_count DESC
-LIMIT 20 OFFSET $2;
-```
-
-### 6.5 Verificar se usuário já votou em uma build
-
-```sql
-SELECT 1 FROM build_votes
-WHERE build_id = $1 AND user_id = $2
-LIMIT 1;
-```
-
-### 6.6 Builds com alertas ativos para um hardware (verificação diária)
+### 6.4 Builds com alertas ativos para um hardware (verificação diária)
 
 ```sql
 SELECT pa.user_id, pa.target_price, u.telegram_chat_id, p.price AS current_price
@@ -541,13 +441,9 @@ Quando uma peça fica sem estoque, registramos `status = 'unavailable'` com `pri
 
 ### 7.4 Soft Delete (deleted_at)
 
-Aplicado em `users`, `hardware`, `builds` e `comments`. Facilita auditoria, evita cascatas acidentais e permite recuperação de dados.
+Aplicado em `users`, `hardware` e `builds`. Facilita auditoria, evita cascatas acidentais e permite recuperação de dados.
 
-### 7.5 Denormalização de Contadores
-
-`builds.upvotes_count` e `comments.likes_count` são contadores denormalizados. Evitam `COUNT(*)` em tempo de query para rankings. São atualizados na camada de serviço Django ao votar/desvotar.
-
-### 7.6 Frequência de Scraping
+### 7.5 Frequência de Scraping
 
 Diária — 1 registro por `(hardware_id, store_id)` por dia na `price_history`. O job é orquestrado via Celery Beat ou n8n às 03:00 BRT.
 
@@ -556,33 +452,32 @@ Diária — 1 registro por `(hardware_id, store_id)` por dia na `price_history`.
 ## 8. Migrations (Django)
 
 ```bash
-python manage.py makemigrations hardware builds community scraping
+python manage.py makemigrations hardware builds scraping
 python manage.py migrate
 ```
 
 Apps Django planejados e suas tabelas principais:
 
-| App Django | Tabelas |
-|-----------|---------|
-| `hardware` | hardware, categories, stores, prices, price_history |
-| `builds` | builds, build_components, build_votes |
-| `community` | comments |
-| `users` (auth customizado) | users |
-| `scraping` | (sem models próprios — lê/escreve em hardware e prices) |
-| `alerts` | price_alerts |
-| `scraping` | coupons (coleta junto com preços) |
+| App Django                   | Tabelas                                                    |
+| ---------------------------- | ---------------------------------------------------------- |
+| `hardware`                 | hardware, categories, stores, prices, price_history        |
+| `builds`                   | builds, build_components                                   |
+| `users` (auth customizado) | users                                                      |
+| `scraping`                 | (sem models próprios — lê/escreve em hardware e prices) |
+| `alerts`                   | price_alerts                                               |
+| `scraping`                 | coupons (coleta junto com preços)                         |
 
 ---
 
 ## 9. Próximos Passos
 
-1. [x] Revisar e alinhar esquema com User Stories e decisões de sessão
-2. [x] Modelagem discutida e validada com Guilherme — sessão 2026-05-22
+1. [X] Revisar e alinhar esquema com User Stories e decisões de sessão
+2. [X] Modelagem discutida e validada com Guilherme — sessão 2026-05-22
 3. [ ] Implementar models.py Django por app
-3. [ ] Criar migrations e rodar em ambiente local (Docker)
-4. [ ] Criar fixtures de seed (categorias, lojas, hardware populares)
-5. [ ] Testar queries de performance com EXPLAIN ANALYZE
-6. [ ] Configurar pgvector se RAG for implementado (Post-MVP)
+4. [ ] Criar migrations e rodar em ambiente local (Docker)
+5. [ ] Criar fixtures de seed (categorias, lojas, hardware populares)
+6. [ ] Testar queries de performance com EXPLAIN ANALYZE
+7. [ ] Configurar pgvector se RAG for implementado (Post-MVP)
 
 ---
 
