@@ -13,8 +13,6 @@
 erDiagram
     USERS ||--o{ BUILDS : "cria"
     USERS ||--o{ PRICE_ALERTS : "define"
-    USERS ||--o{ BUILD_VOTES : "vota"
-    USERS ||--o{ COMMENTS : "escreve"
     CATEGORIES ||--o{ HARDWARE : "classifica"
     HARDWARE ||--o{ PRICES : "preco atual"
     HARDWARE ||--o{ PRICE_HISTORY : "historico"
@@ -25,9 +23,6 @@ erDiagram
     STORES ||--o{ PRICE_HISTORY : "registra"
     STORES ||--o{ COUPONS : "emite"
     BUILDS ||--o{ BUILD_COMPONENTS : "contem"
-    BUILDS ||--o{ BUILD_VOTES : "recebe"
-    BUILDS ||--o{ COMMENTS : "recebe"
-    COMMENTS ||--o{ COMMENTS : "responde"
 
     USERS {
         bigint id PK
@@ -76,27 +71,12 @@ erDiagram
         bigint id PK
         bigint user_id FK
         varchar name
-        varchar share_token UK
-        boolean is_public
-        int upvotes_count
     }
     BUILD_COMPONENTS {
         bigint id PK
         bigint build_id FK
         bigint hardware_id FK
         int quantity
-    }
-    BUILD_VOTES {
-        bigint id PK
-        bigint build_id FK
-        bigint user_id FK
-    }
-    COMMENTS {
-        bigint id PK
-        bigint build_id FK
-        bigint user_id FK
-        bigint parent_id FK
-        text content
     }
     COUPONS {
         bigint id PK
@@ -250,21 +230,14 @@ CREATE TABLE builds (
     name          VARCHAR(255) NOT NULL,
     description   TEXT,
     use_type      VARCHAR(50) NULL,            -- 'gaming', 'work', 'streaming', 'office' (US-41)
-    share_token   VARCHAR(64) UNIQUE NULL,     -- token para URL pública compartilhável (US-34)
     total_price   DECIMAL(12,2),
-    is_public     BOOLEAN DEFAULT FALSE,
-    upvotes_count INT DEFAULT 0,               -- contador denormalizado para performance
-    views_count   INT DEFAULT 0,
     created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     deleted_at    TIMESTAMP NULL
 );
 
-CREATE INDEX idx_builds_user        ON builds(user_id);
-CREATE INDEX idx_builds_public_date ON builds(is_public, created_at DESC);
-CREATE INDEX idx_builds_upvotes     ON builds(is_public, upvotes_count DESC);
-CREATE INDEX idx_builds_share_token ON builds(share_token) WHERE share_token IS NOT NULL;
-CREATE INDEX idx_builds_use_type    ON builds(use_type) WHERE is_public = TRUE;
+CREATE INDEX idx_builds_user     ON builds(user_id);
+CREATE INDEX idx_builds_use_type ON builds(use_type);
 ```
 
 ### 2.8 BuildComponents
@@ -284,46 +257,7 @@ CREATE TABLE build_components (
 CREATE INDEX idx_build_components_build ON build_components(build_id);
 ```
 
-### 2.9 BuildVotes
-
-```sql
--- US-43: 1 voto por usuário por build, removível.
--- upvotes_count em builds é atualizado via trigger ou na camada de serviço.
-
-CREATE TABLE build_votes (
-    id         BIGSERIAL PRIMARY KEY,
-    build_id   BIGINT NOT NULL REFERENCES builds(id) ON DELETE CASCADE,
-    user_id    BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    UNIQUE(build_id, user_id)
-);
-
-CREATE INDEX idx_build_votes_build ON build_votes(build_id);
-CREATE INDEX idx_build_votes_user  ON build_votes(user_id);
-```
-
-### 2.10 Comments
-
-```sql
-CREATE TABLE comments (
-    id          BIGSERIAL PRIMARY KEY,
-    build_id    BIGINT NOT NULL REFERENCES builds(id) ON DELETE CASCADE,
-    user_id     BIGINT NOT NULL REFERENCES users(id),
-    parent_id   BIGINT REFERENCES comments(id) ON DELETE CASCADE,  -- respostas aninhadas
-    content     TEXT NOT NULL,
-    likes_count INT DEFAULT 0,
-    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    deleted_at  TIMESTAMP NULL
-);
-
-CREATE INDEX idx_comments_build ON comments(build_id);
-CREATE INDEX idx_comments_user  ON comments(user_id);
-CREATE INDEX idx_comments_date  ON comments(created_at DESC);
-```
-
-### 2.11 Coupons
+### 2.9 Coupons
 
 ```sql
 -- Cupons coletados via scraping, vinculados a um produto em uma loja específica.
@@ -346,7 +280,7 @@ CREATE INDEX idx_coupons_hardware ON coupons(hardware_id) WHERE is_active = TRUE
 CREATE INDEX idx_coupons_store    ON coupons(store_id) WHERE is_active = TRUE;
 ```
 
-### 2.12 PriceAlerts (Could Have)
+### 2.10 PriceAlerts (Could Have)
 
 ```sql
 -- US-26: usuário define preço-alvo; bot Telegram notifica quando atingido.
@@ -421,7 +355,6 @@ A compatibilidade é verificada no backend Django comparando os campos `specific
 | price_history    | status                 | IN ('available', 'unavailable') | Validado na camada Django       |
 | builds           | user_id                | FK NOT NULL                     | Build deve ter dono             |
 | build_components | quantity               | > 0                             | Quantidade mínima 1            |
-| build_votes      | (build_id, user_id)    | UNIQUE                          | 1 voto por usuário por build   |
 | price_alerts     | (user_id, hardware_id) | UNIQUE                          | 1 alerta por peça por usuário |
 
 ---
@@ -435,10 +368,7 @@ A compatibilidade é verificada no backend Django comparando os campos `specific
 | idx_hardware_specs              | hardware      | specifications (GIN)                  | Queries JSONB de compatibilidade  |
 | idx_prices_updated              | prices        | updated_at DESC                       | Preços mais recentes             |
 | idx_price_history_hardware_date | price_history | hardware_id, recorded_at DESC         | Gráfico de histórico            |
-| idx_builds_public_date          | builds        | is_public, created_at DESC            | Ranking "Recentes"                |
-| idx_builds_upvotes              | builds        | is_public, upvotes_count DESC         | Ranking "Populares"               |
-| idx_builds_use_type             | builds        | use_type (parcial: is_public=TRUE)    | Filtro por uso na comunidade      |
-| idx_build_votes_build           | build_votes   | build_id                              | Contagem de votos por build       |
+| idx_builds_use_type             | builds        | use_type                              | Filtro por uso                   |
 | idx_price_alerts_hardware       | price_alerts  | hardware_id (parcial: is_active=TRUE) | Verificação diária de alertas  |
 
 ---
@@ -481,27 +411,7 @@ WHERE hardware_id = $1
   AND store_id    = $2;
 ```
 
-### 6.4 Ranking de builds populares com filtro por uso
-
-```sql
-SELECT b.*, u.username, u.avatar_url
-FROM builds b
-JOIN users u ON b.user_id = u.id
-WHERE b.is_public = TRUE
-  AND ($1::VARCHAR IS NULL OR b.use_type = $1)   -- filtro opcional por uso
-ORDER BY b.upvotes_count DESC
-LIMIT 20 OFFSET $2;
-```
-
-### 6.5 Verificar se usuário já votou em uma build
-
-```sql
-SELECT 1 FROM build_votes
-WHERE build_id = $1 AND user_id = $2
-LIMIT 1;
-```
-
-### 6.6 Builds com alertas ativos para um hardware (verificação diária)
+### 6.4 Builds com alertas ativos para um hardware (verificação diária)
 
 ```sql
 SELECT pa.user_id, pa.target_price, u.telegram_chat_id, p.price AS current_price
@@ -531,13 +441,9 @@ Quando uma peça fica sem estoque, registramos `status = 'unavailable'` com `pri
 
 ### 7.4 Soft Delete (deleted_at)
 
-Aplicado em `users`, `hardware`, `builds` e `comments`. Facilita auditoria, evita cascatas acidentais e permite recuperação de dados.
+Aplicado em `users`, `hardware` e `builds`. Facilita auditoria, evita cascatas acidentais e permite recuperação de dados.
 
-### 7.5 Denormalização de Contadores
-
-`builds.upvotes_count` e `comments.likes_count` são contadores denormalizados. Evitam `COUNT(*)` em tempo de query para rankings. São atualizados na camada de serviço Django ao votar/desvotar.
-
-### 7.6 Frequência de Scraping
+### 7.5 Frequência de Scraping
 
 Diária — 1 registro por `(hardware_id, store_id)` por dia na `price_history`. O job é orquestrado via Celery Beat ou n8n às 03:00 BRT.
 
@@ -546,7 +452,7 @@ Diária — 1 registro por `(hardware_id, store_id)` por dia na `price_history`.
 ## 8. Migrations (Django)
 
 ```bash
-python manage.py makemigrations hardware builds community scraping
+python manage.py makemigrations hardware builds scraping
 python manage.py migrate
 ```
 
@@ -555,8 +461,7 @@ Apps Django planejados e suas tabelas principais:
 | App Django                   | Tabelas                                                    |
 | ---------------------------- | ---------------------------------------------------------- |
 | `hardware`                 | hardware, categories, stores, prices, price_history        |
-| `builds`                   | builds, build_components, build_votes                      |
-| `community`                | comments                                                   |
+| `builds`                   | builds, build_components                                   |
 | `users` (auth customizado) | users                                                      |
 | `scraping`                 | (sem models próprios — lê/escreve em hardware e prices) |
 | `alerts`                   | price_alerts                                               |

@@ -66,9 +66,6 @@ backend/
     │   ├── test_build_creation.py
     │   ├── test_compatibility_check.py
     │   └── test_build_list.py
-    ├── test_community/
-    │   ├── test_ranking.py
-    │   └── test_comments.py
     ├── test_ai_service/
     │   ├── test_suggestions.py
     │   └── test_rag_integration.py
@@ -213,7 +210,6 @@ def test_create_build_with_components(user, hardware_list):
 | **Login** | Usuário novo se registra | 1. Acessar login; 2. Preencher formulário; 3. Confirmar email; 4. Logar |
 | **Criação de Build** | Usuário cria build gamer | 1. Home > PC Builder; 2. Selecionar peças; 3. Verificar compatibilidade; 4. Salvar |
 | **Comparação de Preços** | Ver melhor preço | 1. Buscar componente; 2. Ver preços por loja; 3. Clicar em oferta |
-| **Community** | Visualizar builds públicas | 1. Community > Ranking; 2. Filtrar por tipo; 3. Ver comentários |
 | **Modo Claro/Escuro** | Trocar tema | 1. Header > Toggle dark mode; 2. Verificar aplicação |
 
 ### 5.3 Exemplo de Teste E2E

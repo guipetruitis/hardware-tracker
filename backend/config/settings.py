@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.alerts.apps.AlertsConfig',
     'apps.builds.apps.BuildsConfig',
-    'apps.community.apps.CommunityConfig',
     'apps.hardware.apps.HardwareConfig',
     'apps.scraping.apps.ScrapingConfig',
     'apps.users.apps.UsersConfig',

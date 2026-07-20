@@ -2,7 +2,7 @@
 
 Plataforma brasileira de montagem de PCs e comparação de preços, inspirada no [meupc.net](https://meupc.net/).
 
-Monitoramento de preços em tempo real nas principais lojas (KaBuM!, Pichau, Terabyte, Amazon), verificador de compatibilidade entre componentes, ferramenta de build com IA integrada e área de comunidade com ranking de builds.
+Monitoramento de preços em tempo real nas principais lojas (KaBuM!, Pichau, Terabyte, Amazon), verificador de compatibilidade entre componentes e ferramenta de build com IA integrada.
 
 > **Status:** Em desenvolvimento — Sprint 0 (Setup & Modelagem)
 
@@ -33,7 +33,6 @@ Monitoramento de preços em tempo real nas principais lojas (KaBuM!, Pichau, Ter
 - **Comparador de Preços** — agrega preços de KaBuM!, Pichau, Terabyte e Amazon com histórico gráfico
 - **PC Builder** — montagem de build com verificação de compatibilidade em tempo real
 - **IA Integrada** — sugestões de peças por orçamento/uso e avaliação da build
-- **Comunidade** — ranking de builds públicas, upvotes e comentários
 - **Alertas de Preço** — notificação via Telegram quando a peça atingir o preço-alvo *(Post-MVP)*
 
 ---
