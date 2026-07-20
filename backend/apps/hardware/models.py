@@ -43,6 +43,8 @@ class Hardware(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(blank=True, null=True)
 
+    class Meta: 
+        ordering = ['-created_at']  # ordena os registros por 'created_at' em ordem decrescente por padrão
     def __str__(self):
         return self.name
 
@@ -61,6 +63,9 @@ class Store(models.Model):
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
 
     def __str__(self):
         return self.name

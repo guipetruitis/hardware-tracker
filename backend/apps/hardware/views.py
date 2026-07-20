@@ -17,5 +17,5 @@ class StoreViewSet(viewsets.ReadOnlyModelViewSet ):
 
 class HardwareViewSet(viewsets.ReadOnlyModelViewSet):
 
-    queryset = Hardware.objects.filter(deleted_at__isnull=True)
+    queryset = Hardware.objects.filter(deleted_at__isnull=True).select_related('category')  # Evitamos um possível problema de performance, pois pode gerar N+1 queries. Para otimizar, usamos select_related para buscar os dados relacionados em uma única query.
     serializer_class = HardwareSerializer
