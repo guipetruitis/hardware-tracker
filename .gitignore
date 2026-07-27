@@ -2,6 +2,16 @@
 .claude/
 .mcp.json
 skills-lock.json
+.agents/
+
+# --- IA / notas de sessão / working docs (não versionar) ---
+CLAUDE.md
+GUIA_FEATURES.md
+settings.local.json
+/2026-*.md
+
+# --- Design / prototipação (não versionar) ---
+design/
 
 # --- Documentos internos ---
 Requisitos-Projeto/
