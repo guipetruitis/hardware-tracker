@@ -15,6 +15,7 @@ design/
 
 # --- Documentos internos ---
 Requisitos-Projeto/
+.brain-hardwaretracker
 
 # --- Python / Django ---
 __pycache__/
