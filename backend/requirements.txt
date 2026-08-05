@@ -13,10 +13,19 @@ django==6.0.5
     #   -r requirements.in
     #   dj-database-url
     #   djangorestframework
+    #   djangorestframework-simplejwt
+django-ratelimit==4.1.0
+    # via -r requirements.in
 djangorestframework==3.17.1
+    # via
+    #   -r requirements.in
+    #   djangorestframework-simplejwt
+djangorestframework-simplejwt==5.5.1
     # via -r requirements.in
 psycopg2-binary==2.9.12
     # via -r requirements.in
+pyjwt==2.13.0
+    # via djangorestframework-simplejwt
 python-decouple==3.8
     # via -r requirements.in
 sqlparse==0.5.5
