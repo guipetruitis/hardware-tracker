@@ -81,7 +81,8 @@ Bem-vindo à documentação centralizada do projeto Hardware Tracker! Este diret
 ---
 
 ### 4. **ROADMAP.md** — Próximos Passos
-   - **Status:** ✅ Atualizado
+   - **📍 Onde está:** `.brain-hardwaretracker/ROADMAP.md` — **não está em `docs/`**. Mora no vault Obsidian local, que é ignorado pelo git (ver `.gitignore`)
+   - **Status:** ✅ Atualizado (2026-08-05 — cronograma até o lançamento de 15/09)
    - **Fase SDLC:** Planejamento Contínuo
    - **Conteúdo:**
      - Estado atual do projeto
@@ -116,6 +117,27 @@ Bem-vindo à documentação centralizada do projeto Hardware Tracker! Este diret
    - Durante code review
 
    **Relacionados:** REQUIREMENTS.md, ARCHITECTURE.md
+
+---
+
+### 6. **BACKEND_PRINCIPLES.md** — Princípios de Backend
+   - **📍 Onde está:** `.brain-hardwaretracker/Wiki/BACKEND_PRINCIPLES.md` — **não está em `docs/`**. Mora no vault Obsidian local, que é ignorado pelo git (ver `.gitignore`)
+   - **Status:** ✅ Vivo (revisar a cada bloco do ROADMAP)
+   - **Fase SDLC:** Transversal (Design → Implementação → Deploy → Operação)
+   - **Conteúdo:**
+     - Os 10 pilares de um backend profissional, cruzados com o estado real do código
+     - Por pilar: o conceito, como quebra na prática, o que existe hoje, o que falta
+     - Lacunas descobertas (L-01 a L-06) com prioridade e momento de decidir
+     - Checklist de maturidade de backend (irmão do checklist de segurança do CLAUDE.md §8.10)
+     - Perguntas em aberto que viram decisão/ADR
+
+   **Quando consultar:**
+   - Antes de implementar escrita no banco, job assíncrono ou endpoint novo
+   - Antes do deploy (rodar o checklist de maturidade)
+   - Depois do deploy, para diagnosticar o que o sistema não conta sobre si mesmo
+   - Ao revisar se uma entrega está de fato de pé, e não só "funcionando no localhost"
+
+   **Relacionados:** ARCHITECTURE.md, DATABASE.md, TESTING.md, ROADMAP.md, CLAUDE.md §8
 
 ---
 
@@ -158,6 +180,10 @@ Bem-vindo à documentação centralizada do projeto Hardware Tracker! Este diret
 | ARCHITECTURE.md | 🔄 Em Planejamento | 0.1 | 2026-05-15 |
 | DATABASE.md | 🔄 Em Planejamento | 0.1 | 2026-05-15 |
 | TESTING.md | 🔄 Em Planejamento | 0.1 | 2026-05-15 |
+| ROADMAP.md | ✅ Atualizado | — | 2026-08-05 |
+| BACKEND_PRINCIPLES.md | ✅ Vivo | 1.0 | 2026-08-06 |
+
+> **📍 Dois destes documentos não vivem em `docs/`:** o `ROADMAP.md` está em `.brain-hardwaretracker/ROADMAP.md` e o `BACKEND_PRINCIPLES.md` em `.brain-hardwaretracker/Wiki/BACKEND_PRINCIPLES.md`. O vault Obsidian é local e ignorado pelo git, então quem clonar este repositório **não** vai encontrá-los — não é arquivo faltando, é escolha de onde eles moram.
 
 ---
 
