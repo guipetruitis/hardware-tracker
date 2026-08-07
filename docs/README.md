@@ -24,7 +24,7 @@ Bem-vindo à documentação centralizada do projeto Hardware Tracker! Este diret
    - Dúvidas sobre escopo
    - Validação de requisitos
 
-   **Relacionados:** CLAUDE.md (contexto)
+   **Relacionados:** `CLAUDE.md` (contexto — local, não versionado)
 
 ---
 
@@ -80,24 +80,7 @@ Bem-vindo à documentação centralizada do projeto Hardware Tracker! Este diret
 
 ---
 
-### 4. **ROADMAP.md** — Próximos Passos
-   - **📍 Onde está:** `.brain-hardwaretracker/ROADMAP.md` — **não está em `docs/`**. Mora no vault Obsidian local, que é ignorado pelo git (ver `.gitignore`)
-   - **Status:** ✅ Atualizado (2026-08-05 — cronograma até o lançamento de 15/09)
-   - **Fase SDLC:** Planejamento Contínuo
-   - **Conteúdo:**
-     - Estado atual do projeto
-     - Blocos de trabalho priorizados (Backend, API, Infra, Frontend, Scraping)
-     - Checklist de tarefas pendentes por bloco
-
-   **Quando consultar:**
-   - Início de sessão (o que fazer a seguir?)
-   - Após concluir uma tarefa (o que vem depois?)
-
-   **Relacionados:** DATABASE.md, ARCHITECTURE.md, REQUIREMENTS.md
-
----
-
-### 5. **TESTING.md** — Estratégia de Testes
+### 4. **TESTING.md** — Estratégia de Testes
    - **Status:** 🔄 Em Planejamento
    - **Fase SDLC:** Testes & Review
    - **Conteúdo:**
@@ -120,24 +103,29 @@ Bem-vindo à documentação centralizada do projeto Hardware Tracker! Este diret
 
 ---
 
-### 6. **BACKEND_PRINCIPLES.md** — Princípios de Backend
-   - **📍 Onde está:** `.brain-hardwaretracker/Wiki/BACKEND_PRINCIPLES.md` — **não está em `docs/`**. Mora no vault Obsidian local, que é ignorado pelo git (ver `.gitignore`)
-   - **Status:** ✅ Vivo (revisar a cada bloco do ROADMAP)
-   - **Fase SDLC:** Transversal (Design → Implementação → Deploy → Operação)
+### 5. **DESIGN.md** — Design System
+   - **Status:** 🔄 Em Planejamento
+   - **Fase SDLC:** Prototipação UI/UX
    - **Conteúdo:**
-     - Os 10 pilares de um backend profissional, cruzados com o estado real do código
-     - Por pilar: o conceito, como quebra na prática, o que existe hoje, o que falta
-     - Lacunas descobertas (L-01 a L-06) com prioridade e momento de decidir
-     - Checklist de maturidade de backend (irmão do checklist de segurança do CLAUDE.md §8.10)
-     - Perguntas em aberto que viram decisão/ADR
+     - Identidade visual (paleta, tipografia, espaçamento)
+     - Componentes e telas planejadas
+     - Fluxo de navegação do MVP
+     - Decisões de design registradas
 
    **Quando consultar:**
-   - Antes de implementar escrita no banco, job assíncrono ou endpoint novo
-   - Antes do deploy (rodar o checklist de maturidade)
-   - Depois do deploy, para diagnosticar o que o sistema não conta sobre si mesmo
-   - Ao revisar se uma entrega está de fato de pé, e não só "funcionando no localhost"
+   - Antes de implementar qualquer tela
+   - Ao criar componente novo
 
-   **Relacionados:** ARCHITECTURE.md, DATABASE.md, TESTING.md, ROADMAP.md, CLAUDE.md §8
+   **Relacionados:** REQUIREMENTS.md
+
+---
+
+## 📍 Documentos fora deste diretório
+
+Dois documentos de trabalho vivem no **vault Obsidian local** (`.brain-hardwaretracker/`), que é ignorado pelo git — quem clonar este repositório não vai encontrá-los, e isso é escolha, não arquivo faltando:
+
+- **`ROADMAP.md`** → `.brain-hardwaretracker/ROADMAP.md` — cronograma e estado das tarefas
+- **`BACKEND_PRINCIPLES.md`** → `.brain-hardwaretracker/Wiki/BACKEND_PRINCIPLES.md` — pilares de backend e checklist de maturidade
 
 ---
 
@@ -180,10 +168,10 @@ Bem-vindo à documentação centralizada do projeto Hardware Tracker! Este diret
 | ARCHITECTURE.md | 🔄 Em Planejamento | 0.1 | 2026-05-15 |
 | DATABASE.md | 🔄 Em Planejamento | 0.1 | 2026-05-15 |
 | TESTING.md | 🔄 Em Planejamento | 0.1 | 2026-05-15 |
-| ROADMAP.md | ✅ Atualizado | — | 2026-08-05 |
-| BACKEND_PRINCIPLES.md | ✅ Vivo | 1.0 | 2026-08-06 |
+| DESIGN.md | 🔄 Em Planejamento | 0.1 | 2026-05-18 |
+| SECURITY_AUDIT_2026-06-03.md | ✅ Concluída | 1.0 | 2026-06-03 |
 
-> **📍 Dois destes documentos não vivem em `docs/`:** o `ROADMAP.md` está em `.brain-hardwaretracker/ROADMAP.md` e o `BACKEND_PRINCIPLES.md` em `.brain-hardwaretracker/Wiki/BACKEND_PRINCIPLES.md`. O vault Obsidian é local e ignorado pelo git, então quem clonar este repositório **não** vai encontrá-los — não é arquivo faltando, é escolha de onde eles moram.
+> Esta tabela cobre só os documentos **versionados**. Os dois que vivem no vault estão listados na seção "📍 Documentos fora deste diretório".
 
 ---
 
@@ -193,9 +181,8 @@ Ao trabalhar com estes documentos, você pode usar:
 
 | Ferramenta | Para | Comando |
 |-----------|------|---------|
-| `/figma-*` | Criar diagramas de arquitetura | Consultar CLAUDE.md seção 6 |
+| `/figma-*` | Criar diagramas de arquitetura | Ver `CLAUDE.md` §6 (local) |
 | `Context7` | Documentação de Django, PostgreSQL, React | Integrado no ambiente |
-| `obsidian-cli` | Sincronizar com notas pessoais | Skill disponível |
 | `json-canvas` | Diagramas visuais (fluxos, etc.) | Skill disponível |
 | GitHub | Versionamento de documentação | commit messages claros |
 
@@ -203,11 +190,10 @@ Ao trabalhar com estes documentos, você pode usar:
 
 ## 🔗 Links Relacionados
 
-- **[CLAUDE.md](../CLAUDE.md)** — Guia de atuação da IA (orquestrador geral)
-- **[Memory System](C:\Users\Guilherme\.claude\projects\c--Users-Guilherme-Documents-Dev-2026-project001-hardware-tracker\memory\MEMORY.md)** — Contexto persistente do projeto
-- **[GitHub Repository](https://github.com/)** — Versionamento do código (a definir)
-- **[Figma Design](https://figma.com/)** — Protótipos UI/UX (a definir)
-- **[n8n Workflows](https://n8n.io/)** — Automações (a definir)
+- **`CLAUDE.md`** (raiz do projeto) — guia de atuação da IA. **Local, não versionado** (ver `.gitignore`)
+- **`.brain-hardwaretracker/`** (raiz do projeto) — vault Obsidian com backlog, user stories, ADRs e notas de sessão. **Local, não versionado**
+- **[Figma Design](https://figma.com/)** — protótipos UI/UX (a definir)
+- **[n8n Workflows](https://n8n.io/)** — automações (a definir)
 
 ---
 
@@ -234,21 +220,16 @@ Ao atualizar documentação:
 1. Editar o arquivo relevante
 2. Atualizar "Última Atualização" e versão
 3. Commit com mensagem clara: `docs: update ARCHITECTURE.md with API design`
-4. Link em MEMORY.md se for decisão importante
+4. Se for decisão arquitetural, registrar uma ADR no vault (`.brain-hardwaretracker/Docs/ADRs/`)
 
 ---
 
-## 🎯 Próximos Passos (Roadmap)
+## 🎯 Próximos Passos
 
-- [ ] Validar ARCHITECTURE.md com decisões finais
-- [ ] Implementar migrations Django baseadas em DATABASE.md
-- [ ] Configurar pytest conforme TESTING.md
-- [ ] Criar Figma designs baseados em REQUIREMENTS.md
-- [ ] Expandir TESTING.md com exemplos reais
-- [ ] Documentar CI/CD em ARCHITECTURE.md
+O cronograma e o estado das tarefas vivem no **`ROADMAP.md` do vault** (`.brain-hardwaretracker/ROADMAP.md`) — fonte única de verdade de prazo. Esta seção existia como lista paralela e foi removida para não manter duas listas divergentes.
 
 ---
 
-**Última revisão:** 2026-05-15  
+**Última revisão:** 2026-08-06  
 **Responsável:** Guilherme (via IA Mentor)  
-**Versão da Documentação:** 0.2
+**Versão da Documentação:** 0.3

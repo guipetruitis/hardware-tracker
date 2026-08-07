@@ -92,13 +92,15 @@ Altura padrão: 48px (large), 36px (medium), 28px (small)
 
 ## 3. Telas Planejadas
 
-| Tela                   | Prioridade | Status         | Arquivo                              |
-|------------------------|-----------|----------------|--------------------------------------|
-| Home Page              | Alta      | Wireframe OK   | `design/wireframe-home-lofi.html`    |
-| Login / Cadastro       | Alta      | Pendente       | —                                    |
-| PC Builder             | Alta      | Pendente       | —                                    |
-| Página de Peça         | Alta      | Pendente       | —                                    |
-| Dashboard do Usuário   | Média     | Pendente       | —                                    |
+| Tela                   | Prioridade | Status      | Arquivo (⚠️ não versionado)                              |
+|------------------------|-----------|-------------|----------------------------------------------------------|
+| Home Page              | Alta      | Hi-Fi OK    | `frontend/design/Wireframes/Hardware Tracker - Home Page Hi-Fi Clean.html` |
+| Login / Cadastro       | Alta      | Hi-Fi OK    | `frontend/design/Wireframes/Hardware Tracker - Login Cadastro Hi-Fi.html` |
+| PC Builder             | Alta      | Hi-Fi OK    | `frontend/design/Wireframes/Hardware Tracker - PC Builder Hi-Fi.html` |
+| Página de Peça         | Alta      | Hi-Fi OK    | `frontend/design/Wireframes/Hardware Tracker - Página de Peça Hi-Fi.html` |
+| Dashboard do Usuário   | Média     | Hi-Fi OK    | `frontend/design/Wireframes/Hardware Tracker - User Dashboard Hi-Fi.html` |
+
+> ⚠️ **Os wireframes não estão no repositório.** A regra `design/` no `.gitignore` casa com `frontend/design/`, então essa pasta inteira é ignorada pelo git. Os arquivos existem apenas na máquina local e **não têm backup** — vale decidir se isso é intencional, já que o Bloco 5 do ROADMAP trata esses wireframes como ~10h de decisão visual já tomada.
 
 ---
 
@@ -119,12 +121,12 @@ PC Builder
 
 ## 5. Links de Design
 
-| Recurso                      | Arquivo / Link                        | Status    |
-|------------------------------|---------------------------------------|-----------|
-| Wireframe Lo-Fi — Home Page  | `design/wireframe-home-lofi.html`     | Aprovado  |
-| Hi-Fi — Home Page            | *(a gerar com prompt clean/laranja)*  | Pendente  |
-| Wireframe — Login            | *(a criar)*                           | Pendente  |
-| Wireframe — PC Builder       | *(a criar)*                           | Pendente  |
+| Recurso                | Arquivo / Link                                  | Status    |
+|------------------------|-------------------------------------------------|-----------|
+| Hi-Fi — 5 telas        | `frontend/design/Wireframes/` (não versionado)  | Aprovado  |
+| Figma                  | *(a definir)*                                   | Pendente  |
+
+> A referência anterior a `design/wireframe-home-lofi.html` foi removida: esse arquivo não existe no projeto. Os wireframes lo-fi foram substituídos pelos hi-fi das 5 telas.
 
 ---
 
