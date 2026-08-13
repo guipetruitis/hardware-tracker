@@ -3,6 +3,8 @@ from .models import User
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password as DjangoValidatePassword
 from django.core.exceptions import ValidationError as DjangoValidationError
+from django.contrib.auth import authenticate
+from rest_framework.exceptions import AuthenticationFailed
 
 class LowerEmailField(serializers.EmailField):
     """
@@ -64,3 +66,25 @@ class RegisterSerializer(serializers.ModelSerializer):
         fields = ['id', 'email', 'password']
 
 
+class LoginSerializer(serializers.Serializer):
+    """
+    Serializer para o endpoint de login.
+    """
+    email = LowerEmailField(required=True)
+    password = serializers.CharField(write_only=True, required=True, style={'input_type': 'password'})
+
+    def validate(self, attrs):
+        """
+        Valida as credenciais do usuário. Se forem inválidas, levanta uma exceção de validação.
+        """
+        email = attrs.get('email')
+        password = attrs.get('password')
+        user = authenticate(email=email, password=password, request=self.context.get('request'))
+
+        if not user:
+            msg = 'Credenciais inválidas.'
+            raise AuthenticationFailed(msg, code='authorization')
+
+        return {
+            'user': user      
+            }

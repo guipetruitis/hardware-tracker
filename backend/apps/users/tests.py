@@ -113,7 +113,7 @@ class RegisterAPITest(APITestCase):
         """
         Protege o write_only=True do campo password.
 
-        Sem ele o corpo do 201 devolve o hash da senha. O risco é concreto:
+        Sem ele o corpo do 200 devolve o hash da senha. O risco é concreto:
         `extra_kwargs` é ignorado silenciosamente em campo declarado, então dá
         para achar que o write_only está ligado quando não está.
         """
@@ -178,3 +178,36 @@ class RegisterAPITest(APITestCase):
         self.assertNotEqual(user.password, 'testpass123')
         self.assertTrue(user.check_password('testpass123'))
         self.assertEqual(response.status_code, 201)
+
+    
+class LoginAPITest(APITestCase):
+    """
+    Testes do endpoint POST /api/auth/login/ (Fatia 2 da Tarefa 5).
+    """
+    def setUp(self):
+        self.url = reverse('login')
+        self.user = User.objects.create_user(
+            email = 'test@example.com',
+            password = 'testpass123')
+
+    def test_valid_credentials_returns_200(self):
+        """
+        Protege o endpoint de login: com credenciais válidas, devolve 200.
+        """
+        response = self.client.post(self.url, {
+            'email': 'test@example.com',
+            'password': 'testpass123', 
+        }, format = 'json')
+        self.assertEqual(response.status_code, 200)
+    
+    def test_invalid_password_returns_401(self):
+        """
+        Protege o endpoint de login: com senha inválida, devolve 401 Unauthorized.
+        """
+        response = self.client.post(self.url, {
+            'email': 'test@example.com',
+            'password': 'wrongpass123',
+        }, format='json')
+        self.assertEqual(response.status_code, 401)
+        self.assertIn('detail', response.data)    
+        
