@@ -151,3 +151,5 @@ SIMPLE_JWT = {
     'SIGNING_KEY': SECRET_KEY,
     'UPDATE_LAST_LOGIN': True,
 }
+
+COOKIE_SECURE = config('COOKIE_SECURE', default=True, cast=bool)

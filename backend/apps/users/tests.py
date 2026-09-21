@@ -210,4 +210,116 @@ class LoginAPITest(APITestCase):
         }, format='json')
         self.assertEqual(response.status_code, 401)
         self.assertIn('detail', response.data)    
-        
+
+    def _login(self):
+        """
+        Faz o login do caminho feliz e devolve a resposta.
+
+        Os cinco testes abaixo medem propriedades diferentes da MESMA
+        resposta. Sem este helper, o dia em que o payload mudar (um campo
+        novo obrigatório, por exemplo) exige editar cinco testes que não
+        têm nada a ver com a mudança.
+        """
+        return self.client.post(self.url, {
+            'email': 'test@example.com',
+            'password': 'testpass123',
+        }, format='json')
+
+    def test_login_sets_both_cookies_as_httponly(self):
+        """
+        Protege o HttpOnly dos DOIS cookies de auth.
+
+        Sem a flag, document.cookie enxerga o token e um XSS o exfiltra —
+        que é exatamente o motivo de o token ter saído do corpo da resposta
+        na decisão 4 de 12/08. Cookie sem HttpOnly desfaz aquela decisão.
+
+        A asserção lê a linha Set-Cookie serializada, não o valor cru do
+        Morsel: se `httponly` for falsy o Django simplesmente não emite o
+        atributo. Isso torna o teste imune ao tipo interno (True x 'True') —
+        um assertTrue sobre o valor cru passaria até com a string 'False'.
+        """
+        response = self._login()
+        for name in ('access', 'refresh'):
+            with self.subTest(cookie=name):
+                self.assertIn('HttpOnly', response.cookies[name].OutputString())
+
+    def test_login_sets_both_cookies_as_samesite_lax(self):
+        """
+        Protege o SameSite=Lax dos dois cookies.
+
+        Lax é a defesa contra CSRF escolhida em 27/07: o navegador não
+        anexa o cookie em requisição partida de outro site. Hoje ela é
+        camada ÚNICA — a P-21 registra que o DRF desliga o
+        CsrfViewMiddleware em toda APIView, e o ciclo 3 é que fecha isso.
+        Enquanto não fecha, esta linha é o que separa o app de um CSRF.
+
+        A caixa importa: o Django repassa a string como foi dada. É o
+        teste quem define 'Lax' como a forma canônica do projeto.
+        """
+        response = self._login()
+        for name in ('access', 'refresh'):
+            with self.subTest(cookie=name):
+                self.assertEqual(response.cookies[name]['samesite'], 'Lax')
+
+    def test_refresh_cookie_is_scoped_to_the_refresh_route(self):
+        """
+        Protege o escopo de Path dos dois cookies (decisão 2 de 12/08):
+        o access vale no site inteiro, o refresh só na rota que o consome.
+
+        O ganho é de exposição — a credencial de 7 dias deixa de viajar em
+        ~99% do tráfego. Se a view esquecer o `path=`, o default do Django
+        é '/' e o refresh passa a ir em toda requisição; este teste é o
+        único que percebe.
+
+        ATENÇÃO: o test client do Django IGNORA escopo de Path e manda
+        todo cookie em toda requisição. Ele verifica que o Django ESCREVEU
+        o Path certo, não que o navegador o respeita. A conferência real é
+        uma vez no DevTools → Application → Cookies.
+        """
+        response = self._login()
+        self.assertEqual(response.cookies['refresh']['path'], reverse('refresh'))
+        self.assertEqual(response.cookies['access']['path'], '/')
+
+    def test_access_cookie_max_age_matches_token_lifetime(self):
+        """
+        Protege o Max-Age do cookie de access.
+
+        Sem ele o cookie vira cookie de sessão: sobrevive ao token (que
+        morre em 15min) e só some quando o navegador fecha — o navegador
+        passa a mandar credencial morta em toda requisição.
+
+        O literal 900 é deliberado. A view deriva o valor de
+        SIMPLE_JWT['ACCESS_TOKEN_LIFETIME']; se o teste derivasse também,
+        os dois lados mudariam juntos e o teste não protegeria nada. Com o
+        literal, mudar o lifetime deixa este teste vermelho e força uma
+        decisão consciente.
+
+        O int() em volta resolve a ambiguidade de o Morsel guardar número
+        ou string, sem depender de qual dos dois é.
+        """
+        response = self._login()
+        self.assertEqual(int(response.cookies['access']['max-age']), 900)
+
+    def test_login_response_body_contains_no_tokens(self):
+        """
+        Regressão do bug mais grave do ciclo 1: a view devolvia
+        {'user': ..., 'token': token} no corpo.
+
+        Token no JSON = JavaScript lê o token = o HttpOnly dos testes
+        acima vira decoração, e um XSS exfiltra a resposta inteira. Os
+        quatro testes anteriores ficariam VERDES com esse bug vivo — só
+        este o pega. É o irmão direto de
+        test_response_does_not_contain_password, do registro.
+
+        A asserção é sobre o CONJUNTO de chaves, não sobre chaves
+        proibidas uma a uma: um assertNotIn('token', ...) não pegaria um
+        campo novo chamado 'jwt', 'access_token' ou 'credential'. Esta
+        versão pega qualquer chave que apareça sem passar por aqui.
+
+        NASCE VERDE — a view de hoje já devolve só UserSerializer(user).data.
+        Antes de confiar nele, quebre de propósito (acrescente 'access' ao
+        dict da resposta), confirme o vermelho e desfaça. Teste que nunca
+        foi vermelho é decoração.
+        """
+        response = self._login()
+        self.assertEqual(set(response.data.keys()), {'id', 'email'})
