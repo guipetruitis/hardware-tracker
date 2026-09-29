@@ -2,7 +2,9 @@ from django.test import TestCase
 from .models import User
 from rest_framework.test import APITestCase
 from django.urls import reverse
-
+from rest_framework.test import APIRequestFactory
+from rest_framework_simplejwt.tokens import RefreshToken
+from .authentication import CookieJWTAuthentication
 class UserModelTest(TestCase):
     def test_create_user_with_email_successful(self):
         user = User.objects.create_user(
@@ -323,3 +325,58 @@ class LoginAPITest(APITestCase):
         """
         response = self._login()
         self.assertEqual(set(response.data.keys()), {'id', 'email'})
+
+class CookieJWTAuthenticationTest(APITestCase):
+    """
+    Teste da classe CookieJWTAuthentication, que autentica usuários a partir do cookie de acesso.
+    """ 
+    def setUp(self):
+        self.user = User.objects.create_user(
+            email = 'test@example.com',
+            password = 'testpass123')
+
+    def test_valid_cookie_returns_user(self):
+        """
+        Caminho feliz da CookieJWTAuthentication: com um token válido no
+        cookie de access, a classe devolve o usuário dono dele.
+
+        É o único teste que separa esta classe da JWTAuthentication de
+        fábrica. Se alguém apagar o corpo do authenticate() e deixar a
+        herança resolver, o pai procura no header Authorization, não acha
+        nada e devolve None — nenhum outro teste do arquivo percebe.
+
+        O assertIsNotNone é para-choque, não rigor extra: sem ele, o
+        desempacotamento da linha seguinte estoura TypeError e o teste vira
+        ERROR em vez de FAIL. Erro só diz que o teste quebrou; a falha limpa
+        ("unexpectedly None") diz o que está errado na feature.
+
+        'qualquer-url' não é rota e nunca é resolvida. O APIRequestFactory
+        monta só o objeto request — quem chama a classe é a linha de baixo,
+        na mão. É isso que permite testar esta fatia sem depender do /me/ da
+        Fatia 4.
+
+        O literal 'access' é deliberado, pelo mesmo motivo do 900 do max-age
+        acima: se o teste importasse ACCESS_COOKIE_NAME, um rename mudaria os
+        dois lados juntos e ele pararia de proteger contra rename. Os
+        literais desta suíte já pegaram exatamente isso — quando o refactor
+        da constante deixou os cookies com o nome errado, foram seis
+        vermelhos de uma vez.
+        """
+    # token access
+        token = RefreshToken.for_user(self.user).access_token
+
+    #request
+        factory = APIRequestFactory() # poderiamos usar o self, mas por enquanto nao 
+        request = factory.get('qualquer-url')
+        request.COOKIES['access'] = str(token) # adiciona o cookie de acesso à requisição simulada
+        
+        # 3. a chamada
+        resultado = CookieJWTAuthentication().authenticate(request)
+
+        # 4. as asserções
+        self.assertIsNotNone(resultado)           # para-choque: F em vez de E
+        user, auth = resultado
+        self.assertEqual(user, self.user)
+
+   
+
