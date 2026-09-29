@@ -1,0 +1,2 @@
+ACCESS_COOKIE_NAME = 'access'
+REFRESH_COOKIE_NAME = 'refresh'

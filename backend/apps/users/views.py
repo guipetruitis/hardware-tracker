@@ -6,7 +6,7 @@ from django.conf import settings
 from django.urls import reverse
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.signals import user_logged_in
-
+from .constants import ACCESS_COOKIE_NAME, REFRESH_COOKIE_NAME
 class RegisterAPIView(CreateAPIView):
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]  # Permite acesso público para registro de usuários, sem ela, o endpoint de registro exigiria autenticação, o que não é desejável para novos usuários que ainda não possuem credenciais.
@@ -41,7 +41,7 @@ class LoginAPIView(GenericAPIView):
         # max_age derivado do lifetime do token, nunca um número na mão —
         # total_seconds() devolve float, daí o int().
         response.set_cookie(
-            'access',
+            ACCESS_COOKIE_NAME,
             str(access),
             max_age=int(settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'].total_seconds()),
             httponly=True,
@@ -54,7 +54,7 @@ class LoginAPIView(GenericAPIView):
         # tráfego. Atenção ao REFRESH_TOKEN_LIFETIME aqui — copiar o lifetime
         # do access mataria este cookie em 15min e nenhum teste perceberia.
         response.set_cookie(
-            'refresh',
+            REFRESH_COOKIE_NAME,
             str(refresh),
             max_age=int(settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'].total_seconds()),
             httponly=True,
